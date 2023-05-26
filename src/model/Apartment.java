@@ -9,9 +9,10 @@ public class Apartment {
 	private int numberOfQueenBeds;
 	private int numberOfNormalBeds;
 	private String viewDescription;
+	private double pricePerNight;
 	
 	public Apartment(String apartmentNo, String apartmentType, boolean hasBalcony, String floorNo, int numberOfKingBeds,
-					 int numberOfQueenBeds, int numberOfNormalBeds, String viewDescription) {
+					 int numberOfQueenBeds, int numberOfNormalBeds, String viewDescription, double pricePerNight) {
 		this.apartmentNo = apartmentNo;
 		this.apartmentType = apartmentType;
 		this.hasBalcony = hasBalcony;
@@ -20,6 +21,7 @@ public class Apartment {
 		this.numberOfQueenBeds = numberOfQueenBeds;
 		this.numberOfNormalBeds = numberOfNormalBeds;
 		this.viewDescription = viewDescription;
+		this.setPricePerNight(pricePerNight);
 	}
 
 	public String getApartmentNo() {
@@ -84,6 +86,14 @@ public class Apartment {
 
 	public void setViewDescription(String viewDescription) {
 		this.viewDescription = viewDescription;
+	}
+
+	public double getPricePerNight() {
+		return pricePerNight;
+	}
+
+	public void setPricePerNight(double pricePerNight) {
+		this.pricePerNight = pricePerNight;
 	}
 	
 	
