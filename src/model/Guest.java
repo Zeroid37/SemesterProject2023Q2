@@ -1,12 +1,15 @@
 package model;
 
+import java.util.Random;
+
 public class Guest extends Person{
 	private int guestNo;
 	private String country;
 	
-	public Guest(String firstName, String famName, Address address, String phone, String email, int guestNo, String country) {
+	public Guest(String firstName, String famName, Address address, String phone, String email, String country) {
 		super(firstName, famName, address, phone, email);
-		this.guestNo = guestNo;
+		Random rand = new Random();
+		this.guestNo = rand.nextInt(999999999);
 		this.country = country;
 	}
 

@@ -5,23 +5,19 @@ public class Apartment {
 	private String apartmentType;
 	private boolean hasBalcony;
 	private String floorNo;
-	private int numberOfKingBeds;
-	private int numberOfQueenBeds;
-	private int numberOfNormalBeds;
+	private int numberOfBeds;
 	private String viewDescription;
 	private double pricePerNight;
 	
-	public Apartment(String apartmentNo, String apartmentType, boolean hasBalcony, String floorNo, int numberOfKingBeds,
-					 int numberOfQueenBeds, int numberOfNormalBeds, String viewDescription, double pricePerNight) {
+	public Apartment(String apartmentNo, String apartmentType, boolean hasBalcony, String floorNo,
+					 int numberOfBeds, String viewDescription, double pricePerNight) {
 		this.apartmentNo = apartmentNo;
 		this.apartmentType = apartmentType;
-		this.hasBalcony = hasBalcony;
+		this.numberOfBeds = numberOfBeds;
 		this.floorNo = floorNo;
-		this.numberOfKingBeds = numberOfKingBeds;
-		this.numberOfQueenBeds = numberOfQueenBeds;
-		this.numberOfNormalBeds = numberOfNormalBeds;
+		this.hasBalcony = hasBalcony;
 		this.viewDescription = viewDescription;
-		this.setPricePerNight(pricePerNight);
+		this.pricePerNight = pricePerNight;
 	}
 
 	public String getApartmentNo() {
@@ -56,30 +52,6 @@ public class Apartment {
 		this.floorNo = floorNo;
 	}
 
-	public int getNumberOfKingBeds() {
-		return numberOfKingBeds;
-	}
-
-	public void setNumberOfKingBeds(int numberOfKingBeds) {
-		this.numberOfKingBeds = numberOfKingBeds;
-	}
-
-	public int getNumberOfQueenBeds() {
-		return numberOfQueenBeds;
-	}
-
-	public void setNumberOfQueenBeds(int numberOfQueenBeds) {
-		this.numberOfQueenBeds = numberOfQueenBeds;
-	}
-
-	public int getNumberOfNormalBeds() {
-		return numberOfNormalBeds;
-	}
-
-	public void setNumberOfNormalBeds(int numberOfNormalBeds) {
-		this.numberOfNormalBeds = numberOfNormalBeds;
-	}
-
 	public String getViewDescription() {
 		return viewDescription;
 	}
@@ -94,6 +66,14 @@ public class Apartment {
 
 	public void setPricePerNight(double pricePerNight) {
 		this.pricePerNight = pricePerNight;
+	}
+
+	public int getNumberOfBeds() {
+		return numberOfBeds;
+	}
+
+	public void setNumberOfBeds(int numberOfBeds) {
+		this.numberOfBeds = numberOfBeds;
 	}
 	
 	
