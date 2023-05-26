@@ -11,22 +11,29 @@ use holidayCenter;
 
 -- create tables
 
-create table Address(
-	id char(12) not null,
+create table ZipCity( 
 	zip int not null,
+	city varchar(20) not null,
+	primary key (zip)
+);
+
+create table Address(
+	id char(12) unique not null,
+	zip_FK int not null,
 	street varchar not null,
 	houseNo int not null,
 	primary key (id),
-	unique (id),
+	foreign key (zip_FK) references ZipCity(zip)
 );
 
 create table Person(
+	id char(12) unique not null,
 	fristName varchar(12) not null,
 	lastName varchar(20) not null,
 	addressId_FK char(12) not null,
-	phone int not null,
-	email varchar not null,
-	userID char (16) not null,
+	phone int unique not null,
+	email varchar unique not null,
+	userID char (16) unique not null,
 	password varchar not null,
 	isAdmin bit,
 	type int not null,
@@ -35,32 +42,32 @@ create table Person(
 );
 
 create table Instructor(
-	instructorNo varchar not null,
-	email_FK varchar not null,
+	instructorNo varchar unique not null,
+	email_FK varchar unique not null,
 	primary key (instructorNo),
 	foreign key (email_FK) references Person(email)
 );
 
 create table Employee(
-	employeeNo int not null,
-	email_FK varchar not null,
+	employeeNo int unique not null,
+	email_FK varchar unique not null,
 	department varchar(16) not null,
 	primary key (employeeNo),
 	foreign key (email_FK) references Person(email)
 );
 
 create table Guest(
-	guestNo int not null,
+	guestNo int unique not null,
 	country varchar not null,
-	email_FK varchar not null,
+	email_FK varchar unique not null,
 	primary key (guestNo),
 	foreign key (email_FK) references Person(email)
 );
 
 create table Profession(
-	id char(12) not null,
+	id char(12) unique not null,
 	name varchar not null,
-	hourlyPrice int not null,
+	hourlyPrice money not null,
 	level varchar not null,
 	primary key (id)
 );
@@ -74,14 +81,14 @@ create table InstructorProfession(
 );
 
 create table Facility(
-	facilityNo int not null,
+	facilityNo int unique not null,
 	facilityType varchar (20) not null,
 	capacity int not null,
 	primary key (facilityNo)
 );
 
 create table ApartmentDescription(
-	id char(12) not null,
+	id char(12) unique not null,
 	hasBalcony bit not null,
 	floorNo int not null,
 	numberOfKingBeds int,
@@ -92,7 +99,7 @@ create table ApartmentDescription(
 );
 
 create table Apartment(
-	apartmentNo int not null,
+	apartmentNo int unique not null,
 	apartmentType varchar not null,
 	apartmentDescription_FK char(12) not null,
 	primary key (apartmentNo),
@@ -100,8 +107,8 @@ create table Apartment(
 );
 
 create table Booking(
-	id char(12) not null,
-	bookingNo int not null,
+	id char(12) unique not null,
+	bookingNo int unique not null,
 	travelAgency varchar,
 	checkinDate datetime not null,
 	noOfNights int not null,
@@ -111,14 +118,23 @@ create table Booking(
 	employeeNo_FK int not null,
 	guestNo_FK int not null,
 	apartmentNo_FK int not null,
+	price money not null,
 	primary key (id),
 	foreign key (guestNo_FK) references Guest (guestNo),
 	foreign key (employeeNo_FK) references Employee(employeeNo),
 	foreign key (apartmentNo_FK) references Apartment(apartmentNo)
 );
 
+create table ApartmentBooking(
+	apartmentNo int not null,
+	bookingId char(12) not null,
+	primary key (apartmentNo, bookingId),
+	foreign key (apartmentNo) references Apartment(apartmentNo),
+	foreign key (bookingId) references booking(id)
+);
+
 create table Reservation(
-	id char (12) not null,
+	id char (12) unique not null,
 	startDate datetime not null,
 	duration int not null,
 	attendeeAmount int not null,
@@ -134,8 +150,8 @@ create table Reservation(
 );
 
 create table Invoice(
-	id char(12) not null,
-	invoiceNo int not null,
+	id char(12) unique not null,
+	invoiceNo int unique not null,
 	datePaid datetime not null,
 	sum int not null,
 	bookingID_FK char(12) not null,
@@ -144,10 +160,10 @@ create table Invoice(
 );
 
 create table Price(
-	id char(12) not null,
+	id char(12) unique not null,
 	apartmentDescription_FK char (12) not null,
 	dateFrom datetime not null,
-	price int not null,
+	price money not null,
 	primary key (id),
 	foreign key (apartmentDescription_FK) references ApartmentDescription(id)
 );
