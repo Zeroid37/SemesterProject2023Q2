@@ -24,7 +24,7 @@ public class Booking {
 		this.activityQuantityToday = 0;
 	}
 	
-	public boolean isDepositPaid(double amount) {
+	public boolean isDepositValid(double amount) {
 		boolean res = false;
 		
 		if (amount>=(price/2)) {
