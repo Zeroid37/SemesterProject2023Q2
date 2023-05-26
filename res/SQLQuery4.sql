@@ -18,7 +18,7 @@ create table ZipCity(
 );
 
 create table Address(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	zip_FK varchar(16) not null,
 	street varchar(16) not null,
 	houseNo varchar(10) not null,
@@ -27,7 +27,7 @@ create table Address(
 );
 
 create table Person(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	fristName varchar(12) not null,
 	lastName varchar(20) not null,
 	addressId_FK varchar(12) not null,
@@ -65,7 +65,7 @@ create table Guest(
 );
 
 create table Profession(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	name varchar(16) not null,
 	hourlyPrice money not null,
 	level varchar(16) not null,
@@ -88,7 +88,7 @@ create table Facility(
 );
 
 create table ApartmentDescription(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	hasBalcony bit not null,
 	floorNo int not null,
 	numberOfKingBeds int,
@@ -107,7 +107,7 @@ create table Apartment(
 );
 
 create table Booking(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	bookingNo int unique not null,
 	travelAgency varchar,
 	checkinDate datetime not null,
@@ -134,7 +134,7 @@ create table ApartmentBooking(
 );
 
 create table Reservation(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	startDate datetime not null,
 	duration int not null,
 	attendeeAmount int not null,
@@ -150,7 +150,7 @@ create table Reservation(
 );
 
 create table Invoice(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	invoiceNo int unique not null,
 	datePaid datetime not null,
 	sum int not null,
@@ -160,7 +160,7 @@ create table Invoice(
 );
 
 create table Price(
-	id varchar(12) unique not null,
+	id int IDENTITY(1,1) not null,
 	apartmentDescription_FK varchar(12) not null,
 	dateFrom datetime not null,
 	price money not null,
