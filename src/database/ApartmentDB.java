@@ -14,4 +14,10 @@ public class ApartmentDB implements ApartmentDAO {
 		return null;
 	}
 
+	@Override
+	public Apartment findApartmentByApartmentNo(String apartmentNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

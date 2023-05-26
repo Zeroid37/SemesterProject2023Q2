@@ -15,5 +15,9 @@ public class ApartmentController {
 	List<Apartment> aList = apartmentDAO.searchForApartments(dateStart, dateEnd, minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
 	return aList;
 }
-	
+	public Apartment findApartmentByAparmentNo(String apartmentNo) {
+		ApartmentDAO apartmentDAO = new ApartmentDB();
+		Apartment a = apartmentDAO.findApartmentByApartmentNo(apartmentNo);
+		return a;
+	}
 }

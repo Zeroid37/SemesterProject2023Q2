@@ -16,11 +16,18 @@ public class BookingController {
 		return apartmentController.searchForApartments(dateStart, dateEnd, minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
 	}
 	
-	public void startBooking(LocalDate dateStart, LocalDate dateEnd, Apartment apartment) {
+	public Booking startBooking(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) {
+		ApartmentController apartmentController = new ApartmentController();
+		Apartment apartment = apartmentController.findApartmentByAparmentNo(apartmentNo);
+		
 		int noOfNights = calculateNoOfNights(dateStart, dateEnd);
+		cBooking = new Booking(apartment, dateStart, noOfNights);
+		cBooking.calculateAndSetPrice();
+		
 		LoginController loginController = new LoginController();
 		Employee e = loginController.getCurrEmployee();
-		cBooking = new Booking(apartment, dateStart, noOfNights);
+		cBooking.setEmployee(e);
+		return cBooking;
 	}
 	
 	public Guest createGuest(String firstName, String familyName, String street, String houseNo,

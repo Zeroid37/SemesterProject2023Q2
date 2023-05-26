@@ -13,8 +13,7 @@ public class Booking {
 	private double price;
 	private Apartment apartment;
 	private Guest guest;
-	
-	
+	private Employee employee;
 	
 	public Booking(Apartment apartment, LocalDate dateStart, int noOfNights) {
 		this.apartment = apartment;
@@ -115,6 +114,14 @@ public class Booking {
 
 	public void setGuest(Guest guest) {
 		this.guest = guest;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 }
 
