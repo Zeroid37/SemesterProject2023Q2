@@ -1,12 +1,15 @@
 package model;
 
+import java.util.Random;
+
 public class Employee extends Person {
 	private int employeeNo;
 	private String department;
 	
 	public Employee(String firstName, String famName, Address address, String phone, String email, int employeeNo, String department) {
 		super(firstName, famName, address, phone, email);
-		this.employeeNo = employeeNo;
+		Random rand = new Random();
+		this.employeeNo = rand.nextInt(9999);
 		this.department = department;
 	}
 
