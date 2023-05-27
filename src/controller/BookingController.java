@@ -13,7 +13,9 @@ public class BookingController {
 			   								   double minPrice, double maxPrice, String apartmentType,
 			   								   int noOfBeds, int floorNo, boolean hasBalcony) {
 		ApartmentController apartmentController = new ApartmentController();
-		return apartmentController.searchForApartments(dateStart, dateEnd, minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
+		List<Apartment> apartments = apartmentController.searchForApartments(minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
+		
+		return apartments;
 	}
 	
 	public Booking startBooking(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) {
@@ -38,9 +40,17 @@ public class BookingController {
 		return g;
 	}
 	
-	public boolean bookingConfirm() {
+	public boolean bookingConfirm() throws DataAccessException {
+		boolean res = false;
+		try {
+		DBConnection.getInstance().startTransaction();
 		BookingDAO bookingDAO = new BookingDB();
-		return bookingDAO.addBookingToDB(cBooking);
+		res = bookingDAO.addBookingToDB(cBooking);
+		DBConnection.getInstance().commitTransaction();
+		} catch (Exception e) {
+			DBConnection.getInstance().rollbackTransaction();
+		}
+		return res;
 	}
 	
 	public boolean payDeposit(double amount, String bookingNo) {
