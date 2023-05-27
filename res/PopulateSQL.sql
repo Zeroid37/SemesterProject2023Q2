@@ -1,12 +1,11 @@
+
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans');
-insert into ApartmentDescription values (1, 2, 3, 'Trashcans');
 insert into ApartmentDescription values (0, 1, 3, 'Swimming Pool');
-/*
 insert into ApartmentDescription values (0, 1, 5, 'The Ocean');
 
-insert into Apartment values (1, 'Single', 1);
-insert into Apartment values (2, 'Family', 2);
-insert into Apartment values (3, 'Penthouse', 3);
+insert into Apartment values ('1', 'Single', 1);
+insert into Apartment values ('2', 'Family', 2);
+insert into Apartment values ('3', 'Penthouse', 3);
 
 
 insert into ZipCity values (9000, 'Aalborg');
@@ -17,8 +16,12 @@ insert into Person values ('Kasper', 'Christiansen', 1, '9394267348', 'Kasp@', '
 
 insert into Guest values (25, 'Denenmark', 'smaji@');
 insert into Employee values (25, 'Sales', 'Kasp@');
-*/
 
---insert into Booking values (10387, 'none', GETDATE(), 7, 0, 0, 0, 25, 25, 10000);
+
+insert into Booking values (10387, 'none', GETDATE(), 7, 0, 0, 0, 25, 25, 10000);
 
 insert into ApartmentBooking values (1, 1);
+
+insert into Price values (1, GETDATE(), 500);
+insert into Price values (2, GETDATE(), 700);
+insert into Price values (3, GETDATE(), 900);

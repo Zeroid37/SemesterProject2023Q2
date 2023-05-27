@@ -96,7 +96,7 @@ create table ApartmentDescription(
 );
 
 create table Apartment(
-	apartmentNo int unique not null,
+	apartmentNo varchar(10) unique not null,
 	apartmentType varchar(16) not null,
 	apartmentDescription_FK int not null,
 	primary key (apartmentNo),
@@ -121,7 +121,7 @@ create table Booking(
 );
 
 create table ApartmentBooking(
-	apartmentNo int not null,
+	apartmentNo varchar(10) not null,
 	bookingId int not null,
 	primary key (apartmentNo, bookingId),
 	foreign key (apartmentNo) references Apartment(apartmentNo),
