@@ -11,14 +11,14 @@ public class BookingController {
 	
 	public List<Apartment> searchForApartments(LocalDate dateStart, LocalDate dateEnd,
 			   								   double minPrice, double maxPrice, String apartmentType,
-			   								   int noOfBeds, int floorNo, boolean hasBalcony) {
+			   								   int noOfBeds, int floorNo, boolean hasBalcony) throws DataAccessException {
 		ApartmentController apartmentController = new ApartmentController();
 		List<Apartment> apartments = apartmentController.searchForApartments(minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
 		
 		return apartments;
 	}
 	
-	public Booking startBooking(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) {
+	public Booking startBooking(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) throws DataAccessException {
 		ApartmentController apartmentController = new ApartmentController();
 		Apartment apartment = apartmentController.findApartmentByAparmentNo(apartmentNo);
 		
@@ -53,7 +53,7 @@ public class BookingController {
 		return res;
 	}
 	
-	public boolean payDeposit(double amount, String bookingNo) {
+	public boolean payDeposit(double amount, String bookingNo) throws DataAccessException {
 		BookingDAO bookingDAO = new BookingDB();
 		Booking booking = bookingDAO.findBookingByBookingNo(bookingNo);
 		boolean res = booking.isDepositValid(amount);

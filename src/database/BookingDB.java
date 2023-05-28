@@ -29,7 +29,8 @@ public class BookingDB implements BookingDAO {
 			this.findByBookingId = con.prepareStatement(FIND_BY_BOOKING_ID);
 			this.findBookingIdByApartmentNo = con.prepareStatement(FIND_BOOKING_ID_BY_APARTMENT_NO);
 			this.updateIsDepositPaidByBookingNo = con.prepareStatement(UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO);
-			this.insertBookingIntoDB = con.prepareStatement(INSERT_BOOKING_INTO_DB, PreparedStatement.RETURN_GENERATED_KEYS);
+			this.insertBookingIntoDB = con.prepareStatement(INSERT_BOOKING_INTO_DB,
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			this.insertApartmentBookingIntoDB = con.prepareStatement(INSERT_APARTMENT_BOOKING_INTO_DB);
 		} catch (SQLException e) {
 			throw new DataAccessException("Statements could not prepare.", e);
@@ -55,38 +56,63 @@ public class BookingDB implements BookingDAO {
 			int bookingId = DBConnection.getInstance().executeInsertWithIdentity(insertBookingIntoDB);
 			String apartmentNo = booking.getApartment().getApartmentNo();
 			addApartmentBookingToDB(apartmentNo, bookingId);
-			
-			
-			
-
+			res = true;
 		} catch (SQLException e) {
 			throw new DataAccessException("Booking could not be saved.", e);
 		}
 
 		return res;
 	}
-	
+
 	private void addApartmentBookingToDB(String apartmentNo, int bookingId) throws DataAccessException {
 		try {
-		this.insertApartmentBookingIntoDB.setString(1, apartmentNo);
-		this.insertApartmentBookingIntoDB.setInt(2, bookingId);
+			this.insertApartmentBookingIntoDB.setString(1, apartmentNo);
+			this.insertApartmentBookingIntoDB.setInt(2, bookingId);
+			this.insertApartmentBookingIntoDB.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException("Booking could not be saved.", e);
 		}
 	}
 
 	@Override
-	public boolean updateBookingInDB(Booking booking) {
-		// TODO Auto-generated method stub
+	public boolean updateBookingInDB(Booking booking) throws DataAccessException {
+		try {
+			this.updateIsDepositPaidByBookingNo.setBoolean(1, booking.isDepositPaid());
+			this.updateIsDepositPaidByBookingNo.setString(2, booking.getBookingNo());
+		} catch (SQLException e) {
+			throw new DataAccessException("Couldn't update deposit paid state.", e);
+		}
 		return false;
 	}
 
 	@Override
-	public Booking findBookingByBookingNo(String bookingNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Booking findBookingByBookingNo(String bookingNo) throws DataAccessException {
+		Booking b = null;
+		try {
+			this.findByBookingNo.setString(1, bookingNo);
+			ResultSet rsBooking = this.findByBookingNo.executeQuery();
+			if(rsBooking.next()) {
+				b = buildObject(rsBooking);
+				ApartmentDAO apartmentDAO = new ApartmentDB();
+				apartmentDAO.findApartmentByApartmentNo(bookingNo);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException("Couldn't find booking.", e);
+		}
+		return b;
 	}
 
+	
+//	if(rsCustomer.next()) {
+//		this.findAddressByAddressId.setInt(1, rsCustomer.getInt("addressId_FK"));
+//		ResultSet rsAddress = this.findAddressByAddressId.executeQuery();
+//		this.findZipCityByZip.setString(1, rsCustomer.getString("zip"));
+//		ResultSet rsZipCity = this.findZipCityByZip.executeQuery();
+//		c = buildObject(rsCustomer, rsAddress, rsZipCity);
+//	}
+	
+	
+	
 	@Override
 	public List<Booking> findBookingsByApartmentNo(String apartmentNo) {
 		List<Booking> bookings = new ArrayList<>();

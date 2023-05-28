@@ -9,8 +9,7 @@ import database.DataAccessException;
 import model.Apartment;
 
 public class ApartmentController {
-	public List<Apartment> searchForApartments(LocalDate dateStart, LocalDate dateEnd,
-											   double minPrice, double maxPrice, String apartmentType, 
+	public List<Apartment> searchForApartments(double minPrice, double maxPrice, String apartmentType, 
 											   int noOfBeds, int floorNo, boolean hasBalcony) throws DataAccessException {
 	ApartmentDAO apartmentDAO = new ApartmentDB();
 	List<Apartment> aList = apartmentDAO.searchForApartments( minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
