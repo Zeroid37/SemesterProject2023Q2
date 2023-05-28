@@ -5,20 +5,24 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.LoginController;
 import model.Booking;
 
 public class BookingDB implements BookingDAO {
 	private static final String FIND_BY_BOOKING_NO = "select * from Booking where bookingNo = ?";
 	private static final String FIND_BY_BOOKING_ID = "select * from Booking where id = ?";
-	private static final String FIND_BOOKING_ID_BY_APARTMENT_NO = "select booking_id from ApartmentBooking where apartmentNo = ?";
+	private static final String FIND_BOOKING_ID_BY_APARTMENT_NO = "select bookingId from ApartmentBooking where apartmentNo = ?";
+	private static final String FIND_APARTMENT_NO_BY_BOOKING_ID = "select apartmentNo from ApartmentBooking where bookingId = ?";
 	private static final String UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO = "update Booking set isDepositPaid = ? where bookingNo = ?";
 	private static final String INSERT_BOOKING_INTO_DB = "insert into Booking values (bookingNo, travelAgency, checkInDate, noOfNights,"
 			+ "discount, isDepositPaid, activityQuantityToday, employeeNo_FK, guestNo_FK, price) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String INSERT_APARTMENT_BOOKING_INTO_DB = "instert into ApartmentBooking (apartmentNo, bookingId) values (?, ?)";
-	private PreparedStatement findByBookingNo, findByBookingId, findBookingIdByApartmentNo,
+	private PreparedStatement findByBookingNo, findByBookingId, findBookingIdByApartmentNo, findApartmentNoByBookingId,
 			updateIsDepositPaidByBookingNo, insertBookingIntoDB, insertApartmentBookingIntoDB;
 
 	public BookingDB() throws DataAccessException {
@@ -28,6 +32,7 @@ public class BookingDB implements BookingDAO {
 			this.findByBookingNo = con.prepareStatement(FIND_BY_BOOKING_NO);
 			this.findByBookingId = con.prepareStatement(FIND_BY_BOOKING_ID);
 			this.findBookingIdByApartmentNo = con.prepareStatement(FIND_BOOKING_ID_BY_APARTMENT_NO);
+			this.findApartmentNoByBookingId = con.prepareStatement(FIND_APARTMENT_NO_BY_BOOKING_ID);
 			this.updateIsDepositPaidByBookingNo = con.prepareStatement(UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO);
 			this.insertBookingIntoDB = con.prepareStatement(INSERT_BOOKING_INTO_DB,
 					PreparedStatement.RETURN_GENERATED_KEYS);
@@ -91,10 +96,12 @@ public class BookingDB implements BookingDAO {
 		try {
 			this.findByBookingNo.setString(1, bookingNo);
 			ResultSet rsBooking = this.findByBookingNo.executeQuery();
-			if(rsBooking.next()) {
-				b = buildObject(rsBooking);
-				ApartmentDAO apartmentDAO = new ApartmentDB();
-				apartmentDAO.findApartmentByApartmentNo(bookingNo);
+			if (rsBooking.next()) {
+				this.findApartmentNoByBookingId.setInt(1, rsBooking.getInt("id"));
+				ResultSet rsApartmentBooking = this.findApartmentNoByBookingId.executeQuery();
+				if (rsApartmentBooking.next()) {
+					b = buildObject(rsBooking, rsApartmentBooking);
+				}
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException("Couldn't find booking.", e);
@@ -102,7 +109,6 @@ public class BookingDB implements BookingDAO {
 		return b;
 	}
 
-	
 //	if(rsCustomer.next()) {
 //		this.findAddressByAddressId.setInt(1, rsCustomer.getInt("addressId_FK"));
 //		ResultSet rsAddress = this.findAddressByAddressId.executeQuery();
@@ -110,22 +116,35 @@ public class BookingDB implements BookingDAO {
 //		ResultSet rsZipCity = this.findZipCityByZip.executeQuery();
 //		c = buildObject(rsCustomer, rsAddress, rsZipCity);
 //	}
-	
-	
-	
+
 	@Override
 	public List<Booking> findBookingsByApartmentNo(String apartmentNo) {
 		List<Booking> bookings = new ArrayList<>();
-		// TODO Auto-generated method stub
+		
+		
+		
 		return bookings;
 	}
 
-	private Booking buildObject(ResultSet rs) {
-		Booking booking = new Booking(null, null, 0);
+	private Booking buildObject(ResultSet rsBooking, ResultSet rsApartmentBooking) {
+		Date date = rsBooking.getDate("checkInDate");
+		LocalDate dateStart = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
+		Booking b = new Booking(rsBooking.getString("bookingNo"), rsBooking.getString("travelAgency"), dateStart,
+				rsBooking.getInt("noOfNights"), rsBooking.getInt("discount"), rsBooking.getBoolean("isDepositPaid"),
+				rsBooking.getInt("activityQuantityToday"), rsBooking.getDouble("price"));
 
-		// Build object
+		try {
+			ApartmentDAO apartmentDAO = new ApartmentDB();
+			b.setApartment(apartmentDAO.findApartmentByApartmentNo(rsApartmentBooking.getString("apartmentNo")));
+			PersonDAO personDAO = new PersonDB();
+			b.setGuest(personDAO.findGuestByGuestNo(rsBooking.getInt("guestNo_FK")));
+			LoginController loginController = new LoginController();
+			b.setEmployee(loginController.getCurrEmployee());
+		} catch (SQLException e) {
+			throw new DataAccessException("Couldn't build booking.", e);
+		}
 
-		return booking;
+		return b;
 	}
 
 	private List<Booking> buildObjects(ResultSet rs) {

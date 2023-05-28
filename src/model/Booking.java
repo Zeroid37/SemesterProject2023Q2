@@ -14,24 +14,36 @@ public class Booking {
 	private Apartment apartment;
 	private Guest guest;
 	private Employee employee;
-	
-	public Booking(Apartment apartment, LocalDate dateStart, int noOfNights) {
+
+	public Booking(Apartment apartment, LocalDate dateStart, int noOfNights) { // Main flow constructor
 		this.apartment = apartment;
 		this.dateStart = dateStart;
 		this.noOfNights = noOfNights;
 		this.isDepositPaid = false;
 		this.activityQuantityToday = 0;
 	}
-	
+
+	public Booking(String bookingNo, String travelAgency, LocalDate dateStart, int noOfNights, int discount,
+			boolean isDepositPaid, int activityQuantityToday, double price) { // BookingDB builder constructor
+		this.bookingNo = bookingNo;
+		this.travelAgency = travelAgency;
+		this.dateStart = dateStart;
+		this.noOfNights = noOfNights;
+		this.discount = discount;
+		this.isDepositPaid = isDepositPaid;
+		this.activityQuantityToday = activityQuantityToday;
+		this.price = price;
+	}
+
 	public boolean isDepositValid(double amount) {
 		boolean res = false;
-		
-		if (amount>=(price/2)) {
+
+		if (amount >= (price / 2)) {
 			res = true;
 		}
 		return res;
 	}
-	
+
 	public void calculateAndSetPrice() {
 		this.price = apartment.getPricePerNight() * noOfNights;
 	}
@@ -124,4 +136,3 @@ public class Booking {
 		this.employee = employee;
 	}
 }
-
