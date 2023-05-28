@@ -11,6 +11,9 @@ insert into Apartment values ('3', 'Penthouse', 3);
 insert into ZipCity values (9000, 'Aalborg');
 insert into Address values ('Boulevarden', 31, 9000);
 
+insert into ZipCity values (8930, 'Randers');
+insert into Address values ('Lolgade', 69, 8930);
+
 insert into Person values ('Smaji', 'Omanovic', 1, '12345678', 'smaji@', '1111', '1111', '1', 'g');
 insert into Person values ('Kasper', 'Christiansen', 1, '9394267348', 'Kasp@', '2222', '2222', '2', 'e');
 

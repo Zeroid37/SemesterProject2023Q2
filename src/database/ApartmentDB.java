@@ -33,6 +33,7 @@ public class ApartmentDB implements ApartmentDAO {
 			Connection con = dbc.getConnection();
 
 			findByCriteria = con.prepareStatement(FIND_BY_CRITERIA);
+			findByApartmentNo = con.prepareStatement(FIND_BY_APARTMENT_NO_Q);
 
 		} catch (SQLException e) {
 			throw new DataAccessException("Something went wrong", e);
@@ -71,7 +72,7 @@ public class ApartmentDB implements ApartmentDAO {
 		Apartment a = null;
 		
 		try {
-			this.findByCriteria.setString(1, apartmentNo);
+			this.findByApartmentNo.setString(1, apartmentNo);
 			ResultSet rsApartment = this.findByApartmentNo.executeQuery();
 			
 			if(rsApartment.next()) {

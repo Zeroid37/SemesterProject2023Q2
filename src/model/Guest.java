@@ -12,6 +12,12 @@ public class Guest extends Person{
 		this.guestNo = rand.nextInt(999999999);
 		this.country = country;
 	}
+	
+	public Guest(String firstName, String famName, Address address, String phone, String email, String userID, String password, boolean isAdmin, String country, int guestNo) {
+		super(firstName, famName, address, phone, email, userID, password, isAdmin);
+		this.guestNo = guestNo;
+		this.country = country;
+	}
 
 	public int getGuestNo() {
 		return guestNo;

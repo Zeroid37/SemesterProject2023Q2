@@ -19,6 +19,18 @@ public abstract class Person {
 		this.email = email;
 		this.isAdmin = false;
 	}
+	
+	public Person(String firstName, String famName, Address address, String phone, String email, String userID, String password, boolean isAdmin) {
+		this.firstName = firstName;
+		this.famName = famName;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;
+		this.userID = userID;
+		this.password = password;
+		this.isAdmin = isAdmin;
+		
+	}
 
 
 	public String getFirstName() {

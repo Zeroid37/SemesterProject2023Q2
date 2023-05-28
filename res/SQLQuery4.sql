@@ -24,11 +24,11 @@ create table Address(
 	primary key (id),
 	foreign key (zip_FK) references ZipCity(zip)
 );
-
+	
 create table Person(
 	id int IDENTITY(1,1) not null,
-	fristName varchar(12) not null,
-	lastName varchar(20) not null,
+	firstName varchar(12) not null,
+	famName varchar(20) not null,
 	addressId_FK int not null,
 	phone varchar(16) unique not null,
 	email varchar(30) unique not null,
