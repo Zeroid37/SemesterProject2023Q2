@@ -109,31 +109,42 @@ public class BookingDB implements BookingDAO {
 		return b;
 	}
 
-//	if(rsCustomer.next()) {
-//		this.findAddressByAddressId.setInt(1, rsCustomer.getInt("addressId_FK"));
-//		ResultSet rsAddress = this.findAddressByAddressId.executeQuery();
-//		this.findZipCityByZip.setString(1, rsCustomer.getString("zip"));
-//		ResultSet rsZipCity = this.findZipCityByZip.executeQuery();
-//		c = buildObject(rsCustomer, rsAddress, rsZipCity);
-//	}
-
 	@Override
-	public List<Booking> findBookingsByApartmentNo(String apartmentNo) {
+	public List<Booking> findBookingsByApartmentNo(String apartmentNo) throws DataAccessException {
 		List<Booking> bookings = new ArrayList<>();
-		
-		
-		
+
+		try {
+			this.findBookingIdByApartmentNo.setString(1, apartmentNo);
+			ResultSet rs = this.findBookingIdByApartmentNo.executeQuery();
+			bookings = buildObjects(rs);
+		} catch (SQLException e) {
+			throw new DataAccessException("Couldn't find bookings", e);
+		}
+
 		return bookings;
 	}
 
-	private Booking buildObject(ResultSet rsBooking, ResultSet rsApartmentBooking) {
-		Date date = rsBooking.getDate("checkInDate");
-		LocalDate dateStart = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
-		Booking b = new Booking(rsBooking.getString("bookingNo"), rsBooking.getString("travelAgency"), dateStart,
-				rsBooking.getInt("noOfNights"), rsBooking.getInt("discount"), rsBooking.getBoolean("isDepositPaid"),
-				rsBooking.getInt("activityQuantityToday"), rsBooking.getDouble("price"));
-
+	public ResultSet findByBookingId(int id) throws DataAccessException {
+		ResultSet rs = null;
 		try {
+			this.findByBookingId.setInt(1, id);
+			rs = this.findByBookingId.executeQuery();
+		} catch (SQLException e) {
+			throw new DataAccessException("Couldn't find booking", e);
+		}
+
+		return rs;
+	}
+
+	private Booking buildObject(ResultSet rsBooking, ResultSet rsApartmentBooking) throws DataAccessException {
+		Booking b = null;
+		try {
+			Date date = rsBooking.getDate("checkInDate");
+			LocalDate dateStart = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
+			b = new Booking(rsBooking.getString("bookingNo"), rsBooking.getString("travelAgency"), dateStart,
+					rsBooking.getInt("noOfNights"), rsBooking.getInt("discount"), rsBooking.getBoolean("isDepositPaid"),
+					rsBooking.getInt("activityQuantityToday"), rsBooking.getDouble("price"));
+
 			ApartmentDAO apartmentDAO = new ApartmentDB();
 			b.setApartment(apartmentDAO.findApartmentByApartmentNo(rsApartmentBooking.getString("apartmentNo")));
 			PersonDAO personDAO = new PersonDB();
@@ -147,11 +158,22 @@ public class BookingDB implements BookingDAO {
 		return b;
 	}
 
-	private List<Booking> buildObjects(ResultSet rs) {
+	private List<Booking> buildObjects(ResultSet rs) throws DataAccessException {
 		List<Booking> bookings = new ArrayList<>();
-
-		// Build objects
-
+		try {
+			while (rs.next()) {
+				Booking b = null;
+				ResultSet rsBooking = findByBookingId(rs.getInt("bookingId"));
+				this.findApartmentNoByBookingId.setInt(1, rsBooking.getInt("id"));
+				ResultSet rsApartmentBooking = this.findApartmentNoByBookingId.executeQuery();
+				if (rsApartmentBooking.next()) {
+					b = buildObject(rsBooking, rsApartmentBooking);
+					bookings.add(b);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException("Couldn't build booking.", e);
+		}
 		return bookings;
 	}
 }
