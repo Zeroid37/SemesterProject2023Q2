@@ -35,7 +35,7 @@ create table Person(
 	userID varchar(16),
 	password varchar(16),
 	isAdmin bit,
-	type char not null,
+	type varChar(1) not null,
 	primary key (email),
 	foreign key (addressId_FK) references Address(id)
 );

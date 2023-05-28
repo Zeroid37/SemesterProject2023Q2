@@ -6,10 +6,9 @@ public class Employee extends Person {
 	private int employeeNo;
 	private String department;
 	
-	public Employee(String firstName, String famName, Address address, String phone, String email, String department, char type) {
+	public Employee(String firstName, String famName, Address address, String phone, String email, String department, String type) {
 		super(firstName, famName, address, phone, email, type);
-		Random rand = new Random();
-		this.employeeNo = rand.nextInt(9999);
+		this.employeeNo = 23;
 		this.department = department;
 	}
 

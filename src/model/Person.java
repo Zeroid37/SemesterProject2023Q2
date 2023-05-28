@@ -9,10 +9,10 @@ public abstract class Person {
 	private String userID;
 	private String password;
 	private boolean isAdmin;
-	private char type;
+	private String type;
 	
 	
-	public Person(String firstName, String famName, Address address, String phone, String email, char type) {
+	public Person(String firstName, String famName, Address address, String phone, String email, String type) {
 		this.firstName = firstName;
 		this.famName = famName;
 		this.address = address;
@@ -22,7 +22,7 @@ public abstract class Person {
 		this.type = type;
 	}
 	
-	public Person(String firstName, String famName, Address address, String phone, String email, String userID, String password, char type, boolean isAdmin) {
+	public Person(String firstName, String famName, Address address, String phone, String email, String userID, String password, String type, boolean isAdmin) {
 		this.firstName = firstName;
 		this.famName = famName;
 		this.address = address;
@@ -114,11 +114,11 @@ public abstract class Person {
 		this.isAdmin = isAdmin;
 	}
 
-	public char getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(char type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	

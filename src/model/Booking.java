@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Booking {
 	private String bookingNo;
@@ -21,6 +22,8 @@ public class Booking {
 		this.noOfNights = noOfNights;
 		this.isDepositPaid = false;
 		this.activityQuantityToday = 0;
+		Random rand = new Random();
+		this.bookingNo = String.valueOf(rand.nextInt(9009));
 	}
 
 	public Booking(String bookingNo, String travelAgency, LocalDate dateStart, int noOfNights, int discount,

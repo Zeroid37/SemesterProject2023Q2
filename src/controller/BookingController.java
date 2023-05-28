@@ -16,10 +16,13 @@ public class BookingController {
 		List<Apartment> apartments = apartmentController.searchForApartments(minPrice, maxPrice, apartmentType,
 				noOfBeds, floorNo, hasBalcony);
 
-		for (int i = 0; i < apartments.size(); i++) {
-			Apartment a = apartments.get(i);
-			checkAvailable(dateStart, dateEnd, a);
-		}
+//		for (int i = 0; i < apartments.size(); i++) {
+//			Apartment a = apartments.get(i);
+//
+//			if (checkAvailable(dateStart, dateEnd, a)) {
+//				apartments.remove(i);
+//			}
+//		}
 
 		return apartments;
 	}
@@ -58,9 +61,10 @@ public class BookingController {
 		cBooking.setEmployee(e);
 		return cBooking;
 	}
-
+	
 	public Guest createGuest(String firstName, String familyName, String street, String houseNo, String zip,
-			String city, String phone, String email, String country, char type) throws DataAccessException {
+			String city, String phone, String email, String country, String type) throws DataAccessException {
+		
 		PersonController personController = new PersonController();
 		Guest g = personController.createGuest(firstName, familyName, street, houseNo, zip, city, phone, email, country,
 				type);
@@ -96,11 +100,12 @@ public class BookingController {
 		int startDay = dateStart.getDayOfYear();
 		int endDay = dateEnd.getDayOfYear();
 		int startYear = dateStart.getYear();
-		int endYear = dateEnd.getDayOfYear();
+		int endYear = dateEnd.getYear();
 		int res;
 
 		int yearDiff = endYear - startYear;
-		res = endDay + yearDiff * 365 - startDay;
+		res = endDay + (yearDiff * 365) - startDay;
+
 
 		return res;
 	}
@@ -111,4 +116,6 @@ public class BookingController {
 		int total = year * 365 + day;
 		return total;
 	}
+	
+	
 }

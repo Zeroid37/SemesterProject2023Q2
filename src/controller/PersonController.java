@@ -11,11 +11,19 @@ public class PersonController {
 	}
 	
 	public Guest createGuest(String firstName, String familyName, String street, String houseNo,
-			                 String zip, String city, String phone, String email, String country, char type) throws DataAccessException {
+			                 String zip, String city, String phone, String email, String country, String type) throws DataAccessException {
+		
 		Address address = new Address(street, houseNo, zip, city);
 		Guest guest = new Guest(firstName, familyName, address, phone, email, country, type);
 		PersonDAO personDAO = new PersonDB();
-		personDAO.addGuestToDB(guest);
+		
+		try {
+			DBConnection.getInstance().startTransaction();
+			personDAO.addGuestToDB(guest);
+			DBConnection.getInstance().commitTransaction();
+		} catch (Exception e) {
+			DBConnection.getInstance().rollbackTransaction();
+		}
 		return guest;
 	}
 }

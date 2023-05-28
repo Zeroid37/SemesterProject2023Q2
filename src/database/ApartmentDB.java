@@ -18,11 +18,10 @@ public class ApartmentDB implements ApartmentDAO {
 			+ "INNER JOIN Apartment ON Apartment.apartmentDescription_FK = ApartmentDescription.id "
 			+ "INNER JOIN Price ON price.apartmentDescription_FK = ApartmentDescription.id "
 			+ "where apartmentType = ? and numberOfBeds = ? and floorNo = ? and hasBalcony = ? and price between ? and ? ";
-	
+
 	private static final String FIND_BY_APARTMENT_NO_Q = "select Apartment.apartmentNo, Apartment.apartmentType, hasBalcony, floorNo, numberOfBeds, viewDescription, price from ApartmentDescription "
 			+ "INNER JOIN Apartment ON Apartment.apartmentDescription_FK = ApartmentDescription.id "
-			+ "INNER JOIN Price ON price.apartmentDescription_FK = ApartmentDescription.id "
-			+ "where apartmentNo = ?";
+			+ "INNER JOIN Price ON price.apartmentDescription_FK = ApartmentDescription.id " + "where apartmentNo = ?";
 
 	private PreparedStatement findByCriteria;
 	private PreparedStatement findByApartmentNo;
@@ -70,18 +69,18 @@ public class ApartmentDB implements ApartmentDAO {
 	@Override
 	public Apartment findApartmentByApartmentNo(String apartmentNo) {
 		Apartment a = null;
-		
+
 		try {
 			this.findByApartmentNo.setString(1, apartmentNo);
 			ResultSet rsApartment = this.findByApartmentNo.executeQuery();
-			
-			if(rsApartment.next()) {
+
+			if (rsApartment.next()) {
 				a = buildObject(rsApartment);
 			}
 		} catch (Exception e) {
 			System.out.println("Something went wrong in ApartmentDB.findApartmentByApartmentNo()");
 		}
-		
+
 		return a;
 	}
 
@@ -89,18 +88,17 @@ public class ApartmentDB implements ApartmentDAO {
 		Apartment a = null;
 
 		try {
-			if (rsAparment.next()) {
-				String apartmentNo = rsAparment.getString("apartmentNo");
-				String apartmentType = rsAparment.getString("apartmentType");
-				boolean hasBalcony = rsAparment.getBoolean("hasBalcony");
-				String floorNo = rsAparment.getString("floorNo");
-				int noOfBeds = rsAparment.getInt("numberOfBeds");
-				String viewDescription = rsAparment.getString("viewDescription");
-				double pricePerNight = rsAparment.getDouble("price");
+			String apartmentNo = rsAparment.getString("apartmentNo");
+			String apartmentType = rsAparment.getString("apartmentType");
+			boolean hasBalcony = rsAparment.getBoolean("hasBalcony");
+			String floorNo = rsAparment.getString("floorNo");
+			int noOfBeds = rsAparment.getInt("numberOfBeds");
+			String viewDescription = rsAparment.getString("viewDescription");
+			double pricePerNight = rsAparment.getDouble("price");
 
-				a = new Apartment(apartmentNo, apartmentType, hasBalcony, floorNo, noOfBeds, viewDescription,
-						pricePerNight);
-			}
+			a = new Apartment(apartmentNo, apartmentType, hasBalcony, floorNo, noOfBeds, viewDescription,
+					pricePerNight);
+
 		} catch (Exception e) {
 
 		}

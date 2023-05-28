@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import database.ApartmentDAO;
@@ -12,7 +13,8 @@ public class ApartmentController {
 	public List<Apartment> searchForApartments(double minPrice, double maxPrice, String apartmentType, 
 											   int noOfBeds, int floorNo, boolean hasBalcony) throws DataAccessException {
 	ApartmentDAO apartmentDAO = new ApartmentDB();
-	List<Apartment> aList = apartmentDAO.searchForApartments( minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
+	List<Apartment> aList = new ArrayList<>();
+	aList = apartmentDAO.searchForApartments( minPrice, maxPrice, apartmentType, noOfBeds, floorNo, hasBalcony);
 	return aList;
 }
 	public Apartment findApartmentByAparmentNo(String apartmentNo) throws DataAccessException {

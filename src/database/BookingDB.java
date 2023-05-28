@@ -19,9 +19,9 @@ public class BookingDB implements BookingDAO {
 	private static final String FIND_BOOKING_ID_BY_APARTMENT_NO = "select bookingId from ApartmentBooking where apartmentNo = ?";
 	private static final String FIND_APARTMENT_NO_BY_BOOKING_ID = "select apartmentNo from ApartmentBooking where bookingId = ?";
 	private static final String UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO = "update Booking set isDepositPaid = ? where bookingNo = ?";
-	private static final String INSERT_BOOKING_INTO_DB = "insert into Booking values (bookingNo, travelAgency, checkInDate, noOfNights,"
+	private static final String INSERT_BOOKING_INTO_DB = "insert into Booking (bookingNo, travelAgency, checkInDate, noOfNights,"
 			+ "discount, isDepositPaid, activityQuantityToday, employeeNo_FK, guestNo_FK, price) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String INSERT_APARTMENT_BOOKING_INTO_DB = "instert into ApartmentBooking (apartmentNo, bookingId) values (?, ?)";
+	private static final String INSERT_APARTMENT_BOOKING_INTO_DB = "insert into ApartmentBooking (apartmentNo, bookingId) values (?, ?)";
 	private PreparedStatement findByBookingNo, findByBookingId, findBookingIdByApartmentNo, findApartmentNoByBookingId,
 			updateIsDepositPaidByBookingNo, insertBookingIntoDB, insertApartmentBookingIntoDB;
 
@@ -81,13 +81,16 @@ public class BookingDB implements BookingDAO {
 
 	@Override
 	public boolean updateBookingInDB(Booking booking) throws DataAccessException {
+		boolean res = false;
 		try {
 			this.updateIsDepositPaidByBookingNo.setBoolean(1, booking.isDepositPaid());
 			this.updateIsDepositPaidByBookingNo.setString(2, booking.getBookingNo());
+			this.updateIsDepositPaidByBookingNo.executeUpdate();
+			res = true;
 		} catch (SQLException e) {
 			throw new DataAccessException("Couldn't update deposit paid state.", e);
 		}
-		return false;
+		return res;
 	}
 
 	@Override
@@ -124,7 +127,7 @@ public class BookingDB implements BookingDAO {
 		return bookings;
 	}
 
-	public ResultSet findByBookingId(int id) throws DataAccessException {
+	private ResultSet findByBookingId(int id) throws DataAccessException {
 		ResultSet rs = null;
 		try {
 			this.findByBookingId.setInt(1, id);
@@ -140,7 +143,7 @@ public class BookingDB implements BookingDAO {
 		Booking b = null;
 		try {
 			Date date = rsBooking.getDate("checkInDate");
-			LocalDate dateStart = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
+			LocalDate dateStart = date.toLocalDate();
 			b = new Booking(rsBooking.getString("bookingNo"), rsBooking.getString("travelAgency"), dateStart,
 					rsBooking.getInt("noOfNights"), rsBooking.getInt("discount"), rsBooking.getBoolean("isDepositPaid"),
 					rsBooking.getInt("activityQuantityToday"), rsBooking.getDouble("price"));
@@ -164,6 +167,7 @@ public class BookingDB implements BookingDAO {
 			while (rs.next()) {
 				Booking b = null;
 				ResultSet rsBooking = findByBookingId(rs.getInt("bookingId"));
+				rsBooking.next();
 				this.findApartmentNoByBookingId.setInt(1, rsBooking.getInt("id"));
 				ResultSet rsApartmentBooking = this.findApartmentNoByBookingId.executeQuery();
 				if (rsApartmentBooking.next()) {
