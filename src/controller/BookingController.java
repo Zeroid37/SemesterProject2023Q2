@@ -33,7 +33,7 @@ public class BookingController {
 	}
 	
 	public Guest createGuest(String firstName, String familyName, String street, String houseNo,
-                             String zip, String city, String phone, String email, String country) {
+                             String zip, String city, String phone, String email, String country) throws DataAccessException {
 		PersonController personController = new PersonController();
 		Guest g = personController.createGuest(firstName, familyName, street, houseNo, zip, city, phone, email, country);
 		cBooking.setGuest(g);
