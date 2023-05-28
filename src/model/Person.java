@@ -9,18 +9,20 @@ public abstract class Person {
 	private String userID;
 	private String password;
 	private boolean isAdmin;
+	private char type;
 	
 	
-	public Person(String firstName, String famName, Address address, String phone, String email) {
+	public Person(String firstName, String famName, Address address, String phone, String email, char type) {
 		this.firstName = firstName;
 		this.famName = famName;
 		this.address = address;
 		this.phone = phone;
 		this.email = email;
 		this.isAdmin = false;
+		this.type = type;
 	}
 	
-	public Person(String firstName, String famName, Address address, String phone, String email, String userID, String password, boolean isAdmin) {
+	public Person(String firstName, String famName, Address address, String phone, String email, String userID, String password, char type, boolean isAdmin) {
 		this.firstName = firstName;
 		this.famName = famName;
 		this.address = address;
@@ -29,7 +31,7 @@ public abstract class Person {
 		this.userID = userID;
 		this.password = password;
 		this.isAdmin = isAdmin;
-		
+		this.type = type;
 	}
 
 
@@ -110,6 +112,14 @@ public abstract class Person {
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public char getType() {
+		return type;
+	}
+
+	public void setType(char type) {
+		this.type = type;
 	}
 	
 	
