@@ -18,8 +18,14 @@ public class ApartmentDB implements ApartmentDAO {
 			+ "INNER JOIN Apartment ON Apartment.apartmentDescription_FK = ApartmentDescription.id "
 			+ "INNER JOIN Price ON price.apartmentDescription_FK = ApartmentDescription.id "
 			+ "where apartmentType = ? and numberOfBeds = ? and floorNo = ? and hasBalcony = ? and price between ? and ? ";
+	
+	private static final String FIND_BY_APARTMENT_NO_Q = "select Apartment.apartmentNo, Apartment.apartmentType, hasBalcony, floorNo, numberOfBeds, viewDescription, price from ApartmentDescription "
+			+ "INNER JOIN Apartment ON Apartment.apartmentDescription_FK = ApartmentDescription.id "
+			+ "INNER JOIN Price ON price.apartmentDescription_FK = ApartmentDescription.id "
+			+ "where apartmentNo = ?";
 
 	private PreparedStatement findByCriteria;
+	private PreparedStatement findByApartmentNo;
 
 	public ApartmentDB() throws DataAccessException {
 		try {
@@ -55,18 +61,34 @@ public class ApartmentDB implements ApartmentDAO {
 				apartments.add(a);
 			}
 		} catch (Exception e) {
-
+			System.out.println("Something went wrong in ApartmentDB.searchForApartments()");
 		}
-
-		return null;
+		return apartments;
 	}
 
-	
-	private Apartment buildObject(ResultSet rsAparment) {
+	@Override
+	public Apartment findApartmentByApartmentNo(String apartmentNo) {
 		Apartment a = null;
 		
 		try {
-			if(rsAparment.next()) {
+			this.findByCriteria.setString(1, apartmentNo);
+			ResultSet rsApartment = this.findByApartmentNo.executeQuery();
+			
+			if(rsApartment.next()) {
+				a = buildObject(rsApartment);
+			}
+		} catch (Exception e) {
+			System.out.println("Something went wrong in ApartmentDB.findApartmentByApartmentNo()");
+		}
+		
+		return a;
+	}
+
+	private Apartment buildObject(ResultSet rsAparment) {
+		Apartment a = null;
+
+		try {
+			if (rsAparment.next()) {
 				String apartmentNo = rsAparment.getString("apartmentNo");
 				String apartmentType = rsAparment.getString("apartmentType");
 				boolean hasBalcony = rsAparment.getBoolean("hasBalcony");
@@ -74,20 +96,14 @@ public class ApartmentDB implements ApartmentDAO {
 				int noOfBeds = rsAparment.getInt("numberOfBeds");
 				String viewDescription = rsAparment.getString("viewDescription");
 				double pricePerNight = rsAparment.getDouble("price");
-				
-				a = new Apartment(apartmentNo, apartmentType, hasBalcony, floorNo, noOfBeds, viewDescription, pricePerNight);
+
+				a = new Apartment(apartmentNo, apartmentType, hasBalcony, floorNo, noOfBeds, viewDescription,
+						pricePerNight);
 			}
 		} catch (Exception e) {
-			
+
 		}
 		return a;
-		
-	}
-	
-	
-	@Override
-	public Apartment findApartmentByApartmentNo(String apartmentNo) {
-		return null;
 	}
 
 }
