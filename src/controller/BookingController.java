@@ -52,6 +52,19 @@ public class BookingController {
 		return apartments;
 	}
 
+	public boolean checkSingleApartment(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) throws DataAccessException {
+		boolean res = true;
+		
+		List<Booking> bookings = new ArrayList<>();
+		BookingDAO bookingDAO = new BookingDB();
+		bookings = bookingDAO.findBookingsByApartmentNo(apartmentNo);
+		
+		for(int i = 0; i < bookings.size() && res; i++) {
+			res = checkAvailable(dateStart, dateEnd, bookings.get(i));
+		}
+		return res;
+	}
+	
 	/**
 	 * Logical calculations based on 2 booking periods, to see if there is overlap
 	 * and thereby deeming the booking not possible.
