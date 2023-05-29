@@ -1,3 +1,5 @@
+use holidayCenter;
+
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans');
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans2');
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans3');
@@ -40,7 +42,7 @@ insert into Person values ('Joe', 'Biden', 3, '12345678', 'joeb@', '123', '123',
 insert into Employee values ('23', 'Receptionist', 'joeb@');
 
 
-insert into Booking values (10387, 'none', GETDATE(), 7, 0, 0, 0, 25, 25, 10000);
+insert into Booking values (10387, 'none', '2023-12-05', 7, 0, 0, 0, 25, 25, 10000);
 
 insert into ApartmentBooking values (1, 1);
 

@@ -39,6 +39,18 @@ public class ApartmentDB implements ApartmentDAO {
 		}
 	}
 
+	/**
+	 * Database call to search for all eligible apartments that match the parameter criteria
+	 * @param	dateStart	Start date of possible booking
+	 * @param	dateEnd		End date of possible booking
+	 * @param 	minPrice	Minimum price for apartment
+	 * @param	maxPrice	Maximum price for apartment
+	 * @param 	apartmentType	Apartment type, e.g "Single" or "Family"
+	 * @param	noOfBeds	Number of Beds in apartment
+	 * @param 	floorNo		Floor number of apartment
+	 * @param	hasBalcony	If apartment has a balcony
+	 * @return ArrayList of Apartments eligible to be booked in given time period
+	 */
 	@Override
 	public List<Apartment> searchForApartments(double minPrice, double maxPrice, String apartmentType, int noOfBeds,
 			int floorNo, boolean hasBalcony) {
@@ -66,6 +78,11 @@ public class ApartmentDB implements ApartmentDAO {
 		return apartments;
 	}
 
+	/**
+	 * Searches database for an apartment with specified apartment number and builds the object
+	 * @param	apartmentNo	Apartment Number
+	 * @return Apartment
+	 */
 	@Override
 	public Apartment findApartmentByApartmentNo(String apartmentNo) {
 		Apartment a = null;
@@ -83,7 +100,12 @@ public class ApartmentDB implements ApartmentDAO {
 
 		return a;
 	}
-
+	
+	/**
+	 * Builds the object based on a resultset given in parameters
+	 * @param rsAparment resultset
+	 * @return Apartment object
+	 */
 	private Apartment buildObject(ResultSet rsAparment) {
 		Apartment a = null;
 

@@ -41,6 +41,11 @@ public class PersonDB implements PersonDAO {
 		}
 	}
 
+	/**
+	 * Adds a guest object to the database
+	 * @param guest Guest object
+	 * @return boolean true or false whether it succeeded
+	 */
 	@Override
 	public boolean addGuestToDB(Guest guest) {
 		boolean res = false;
@@ -70,7 +75,12 @@ public class PersonDB implements PersonDAO {
 
 		return res;
 	}
-
+	
+	/**
+	 * Adds an address object to the database
+	 * @param a Address object
+	 * @return int surrogate key of the row that was created. Returned int is -1 if failed
+	 */
 	private int addAddressToDB(Address a) throws DataAccessException {
 		int id = -1;
 		try {
@@ -91,6 +101,11 @@ public class PersonDB implements PersonDAO {
 		return id;
 	}
 
+	/**
+	 * Find guest by guest number
+	 * @param guestNo guest number
+	 * @return Guest object
+	 */
 	@Override
 	public Guest findGuestByGuestNo(int guestNo) throws DataAccessException {
 		Guest g = null;
@@ -110,6 +125,11 @@ public class PersonDB implements PersonDAO {
 		return g;
 	}
 
+	/**
+	 * Builds guest object based on resultset
+	 * @param rs Resultset of a found guest
+	 * @return Guest object
+	 */
 	private Guest buildGuest(ResultSet rs) {
 		Guest g = null;
 		Address a = null;
@@ -131,14 +151,12 @@ public class PersonDB implements PersonDAO {
 			boolean isAdmin = rs.getBoolean("isAdmin");
 			String country = rs.getString("country");
 			int guestNo = rs.getInt("guestNo");
-			String type = rs.getString("type");
 
-			g = new Guest(firstName, famName, a, phone, email, userID, password, type, isAdmin, country, guestNo);
+			g = new Guest(firstName, famName, a, phone, email, userID, password, isAdmin, country, guestNo);
 
 		} catch (Exception e) {
 
 		}
-
 		return g;
 	}
 

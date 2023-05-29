@@ -42,6 +42,12 @@ public class BookingDB implements BookingDAO {
 		}
 	}
 
+	
+	/**
+	 * Adds the given booking to the database
+	 * @param booking Booking object
+	 * @return Boolean true or false whether it succeeded adding the booking to the database
+	 */
 	@Override
 	public boolean addBookingToDB(Booking booking) throws DataAccessException {
 		boolean res = false;
@@ -68,7 +74,11 @@ public class BookingDB implements BookingDAO {
 
 		return res;
 	}
-
+	/**
+	 * Adds the data to the ApartmentBooking table in the database
+	 * @param apartmentNo apartment number
+	 * @param bookingId the booking ID
+	 */
 	private void addApartmentBookingToDB(String apartmentNo, int bookingId) throws DataAccessException {
 		try {
 			this.insertApartmentBookingIntoDB.setString(1, apartmentNo);
@@ -79,6 +89,11 @@ public class BookingDB implements BookingDAO {
 		}
 	}
 
+	/**
+	 * Updates a booking's deposit to be paid. Can also be used the other way around.
+	 * @param booking Booking object that you wish to update the deposit on
+	 * @return boolean true or false whether the deposit has been updated
+	 */
 	@Override
 	public boolean updateBookingInDB(Booking booking) throws DataAccessException {
 		boolean res = false;
@@ -93,6 +108,11 @@ public class BookingDB implements BookingDAO {
 		return res;
 	}
 
+	/**
+	 * Finds a booking in the database by booking number
+	 * @param bookingNo Booking number of the booking you are trying to find
+	 * @return Booking object
+	 */
 	@Override
 	public Booking findBookingByBookingNo(String bookingNo) throws DataAccessException {
 		Booking b = null;
@@ -111,7 +131,12 @@ public class BookingDB implements BookingDAO {
 		}
 		return b;
 	}
-
+	
+	/**
+	 * Finds all bookings an apartment has by its apartment number
+	 * @param apartmentNo apartment number of the apartment you want to find all bookings for
+	 * @return ArrayList of bookings
+	 */
 	@Override
 	public List<Booking> findBookingsByApartmentNo(String apartmentNo) throws DataAccessException {
 		List<Booking> bookings = new ArrayList<>();
@@ -126,7 +151,12 @@ public class BookingDB implements BookingDAO {
 
 		return bookings;
 	}
-
+	
+	/**
+	 * Finds booking by booking id
+	 * @param id ID of the booking
+	 * @return ResultSet of the booking
+	 */
 	private ResultSet findByBookingId(int id) throws DataAccessException {
 		ResultSet rs = null;
 		try {
@@ -138,7 +168,13 @@ public class BookingDB implements BookingDAO {
 
 		return rs;
 	}
-
+	
+	/**
+	 * Builds object from a resultset
+	 * @param rsBooking the booking resultset
+	 * @param rsApartmentBooking the ApartmentBooking resultset
+	 * @return Booking object
+	 */
 	private Booking buildObject(ResultSet rsBooking, ResultSet rsApartmentBooking) throws DataAccessException {
 		Booking b = null;
 		try {
@@ -160,7 +196,11 @@ public class BookingDB implements BookingDAO {
 
 		return b;
 	}
-
+	/**
+	 * Builds multiple objects and puts them in an arraylist
+	 * @param rs resultset
+	 * @return ArrayList of bookings
+	 */
 	private List<Booking> buildObjects(ResultSet rs) throws DataAccessException {
 		List<Booking> bookings = new ArrayList<>();
 		try {

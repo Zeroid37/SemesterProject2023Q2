@@ -6,15 +6,15 @@ public class Guest extends Person{
 	private int guestNo;
 	private String country;
 	
-	public Guest(String firstName, String famName, Address address, String phone, String email, String country, String type) {
-		super(firstName, famName, address, phone, email, type);
+	public Guest(String firstName, String famName, Address address, String phone, String email, String country) {
+		super(firstName, famName, address, phone, email, "g");
 		Random rand = new Random();
 		this.guestNo = rand.nextInt(999999999);
 		this.country = country;
 	}
 	
-	public Guest(String firstName, String famName, Address address, String phone, String email, String userID, String password, String type, boolean isAdmin, String country, int guestNo) {
-		super(firstName, famName, address, phone, email, userID, password, type, isAdmin);
+	public Guest(String firstName, String famName, Address address, String phone, String email, String userID, String password, boolean isAdmin, String country, int guestNo) {
+		super(firstName, famName, address, phone, email, userID, password, "g", isAdmin);
 		this.guestNo = guestNo;
 		this.country = country;
 	}
