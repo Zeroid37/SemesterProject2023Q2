@@ -13,20 +13,21 @@ public class PersonDB implements PersonDAO {
 			+ "INNER JOIN Guest on Guest.email_FK = Person.email "
 			+ "INNER JOIN Address on person.addressId_FK = address.id "
 			+ "INNER JOIN ZipCity on Address.zip_FK = zipCity.zip " + "where guestNo = ? and type = ?";
-
+	private static final String FIND_ZIPCODE_IN_DB_Q = "select * from ZipCity where zip = ?";
 	private static final String ADD_ZIPCITY_TO_DB_Q = "insert into ZipCity values (?, ?)";
 	private static final String ADD_ADDRESS_TO_DB_Q = "insert into Address values (?, ?, ?)";
 	private static final String ADD_PERSON_TO_DB_Q = "insert into Person values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String ADD_GUEST_TO_DB_Q = "insert into Guest values (?, ?, ?)";
 
-	private PreparedStatement findGuestByGuestNo, insertZipCityToDB, insertAddressToDB, insertPersonToDB,
-			insertGuestToDB;
+	private PreparedStatement findGuestByGuestNo, findZipcodeInDB, insertZipCityToDB, insertAddressToDB,
+			insertPersonToDB, insertGuestToDB;
 
 	public PersonDB() throws DataAccessException {
 		try {
 			DBConnection dbc = DBConnection.getInstance();
 			Connection con = dbc.getConnection();
 			this.findGuestByGuestNo = con.prepareStatement(FIND_GUEST_BY_GUEST_NO_Q);
+			this.findZipcodeInDB = con.prepareStatement(FIND_ZIPCODE_IN_DB_Q);
 			this.insertZipCityToDB = con.prepareStatement(ADD_ZIPCITY_TO_DB_Q);
 			this.insertAddressToDB = con.prepareStatement(ADD_ADDRESS_TO_DB_Q, PreparedStatement.RETURN_GENERATED_KEYS);
 			this.insertPersonToDB = con.prepareStatement(ADD_PERSON_TO_DB_Q);
@@ -38,6 +39,7 @@ public class PersonDB implements PersonDAO {
 
 	/**
 	 * Adds a guest object to the database
+	 * 
 	 * @param guest Guest object
 	 * @return boolean true or false whether it succeeded
 	 */
@@ -70,23 +72,28 @@ public class PersonDB implements PersonDAO {
 
 		return res;
 	}
-	
+
 	/**
 	 * Adds an address object to the database
+	 * 
 	 * @param a Address object
-	 * @return int surrogate key of the row that was created. Returned int is -1 if failed
+	 * @return int surrogate key of the row that was created. Returned int is -1 if
+	 *         failed
 	 */
 	private int addAddressToDB(Address a) throws DataAccessException {
 		int id = -1;
 		try {
-			this.insertZipCityToDB.setString(1, a.getZip());
-			this.insertZipCityToDB.setString(2, a.getCity());
-			this.insertZipCityToDB.executeUpdate();
+			ResultSet rs = this.findZipcodeInDB.executeQuery();
+			if (!rs.next()) {
+				this.insertZipCityToDB.setString(1, a.getZip());
+				this.insertZipCityToDB.setString(2, a.getCity());
+				this.insertZipCityToDB.executeUpdate();
+			}
 
 			this.insertAddressToDB.setString(1, a.getStreet());
 			this.insertAddressToDB.setString(2, a.getHouseNo());
 			this.insertAddressToDB.setString(3, a.getZip());
-			
+
 			id = DBConnection.getInstance().executeInsertWithIdentity(insertAddressToDB);
 
 		} catch (SQLException e) {
@@ -98,6 +105,7 @@ public class PersonDB implements PersonDAO {
 
 	/**
 	 * Find guest by guest number
+	 * 
 	 * @param guestNo guest number
 	 * @return Guest object
 	 */
@@ -122,6 +130,7 @@ public class PersonDB implements PersonDAO {
 
 	/**
 	 * Builds guest object based on ResultSet
+	 * 
 	 * @param rs ResultSet of a found guest
 	 * @return Guest object
 	 */
