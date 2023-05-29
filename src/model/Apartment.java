@@ -4,12 +4,12 @@ public class Apartment {
 	private String apartmentNo;
 	private String apartmentType;
 	private boolean hasBalcony;
-	private String floorNo;
+	private int floorNo;
 	private int numberOfBeds;
 	private String viewDescription;
 	private double pricePerNight;
 	
-	public Apartment(String apartmentNo, String apartmentType, boolean hasBalcony, String floorNo,
+	public Apartment(String apartmentNo, String apartmentType, boolean hasBalcony, int floorNo,
 					 int numberOfBeds, String viewDescription, double pricePerNight) {
 		this.apartmentNo = apartmentNo;
 		this.apartmentType = apartmentType;
@@ -44,11 +44,11 @@ public class Apartment {
 		this.hasBalcony = hasBalcony;
 	}
 
-	public String getFloorNo() {
+	public int getFloorNo() {
 		return floorNo;
 	}
 
-	public void setFloorNo(String floorNo) {
+	public void setFloorNo(int floorNo) {
 		this.floorNo = floorNo;
 	}
 

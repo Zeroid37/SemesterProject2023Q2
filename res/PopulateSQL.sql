@@ -1,5 +1,6 @@
 use holidayCenter;
 
+--values(hasBalcony, floorNo, noOfBeds, viewDescription)
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans');
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans2');
 insert into ApartmentDescription values (1, 2, 2, 'Trashcans3');
@@ -11,7 +12,7 @@ insert into ApartmentDescription values (0, 2, 2, 'Pest');
 insert into ApartmentDescription values (1, 3, 4, 'HIV');
 insert into ApartmentDescription values (1, 1, 1, 'Kasper');
 
-
+--values(apartmentNo, apartmentType, apartmentDescription_FK)
 insert into Apartment values ('1', 'Single', 1);
 insert into Apartment values ('2', 'Single', 2);
 insert into Apartment values ('3', 'Single', 3);

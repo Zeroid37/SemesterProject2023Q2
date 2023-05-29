@@ -29,8 +29,8 @@ public class tui {
 	public static void main(String[] args) throws DataAccessException {
 		BookingController bookingController = new BookingController();
 		
-		LocalDate start = LocalDate.of(2023, 12, 11);
-		LocalDate end = LocalDate.of(2023, 12, 20);
+		LocalDate start = LocalDate.of(2022, 12, 11);
+		LocalDate end = LocalDate.of(2024, 12, 20);
 		
 		List<Apartment> a = new ArrayList<>();
 		a = bookingController.searchForApartments(start, end, 499, 501, "Single", 2, 2, true);

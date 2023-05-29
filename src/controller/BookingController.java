@@ -66,8 +66,7 @@ public class BookingController {
 			
 			int s2 = convertDateToInt(bookings.get(i).getDateStart());
 			int e2 = s2 + bookings.get(i).getNoOfNights();
-
-			System.out.println("S1: " + s1 + "\nE1: " + e1 + "\nS2: " + s2 + "\nE2: " + e2);
+			
 			if (s1 <= e2 && s2 >= e1 || s1 >= e2 && s2 <= e1) {
 				res = false;
 			}

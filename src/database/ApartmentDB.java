@@ -113,7 +113,7 @@ public class ApartmentDB implements ApartmentDAO {
 			String apartmentNo = rsAparment.getString("apartmentNo");
 			String apartmentType = rsAparment.getString("apartmentType");
 			boolean hasBalcony = rsAparment.getBoolean("hasBalcony");
-			String floorNo = rsAparment.getString("floorNo");
+			int floorNo = rsAparment.getInt("floorNo");
 			int noOfBeds = rsAparment.getInt("numberOfBeds");
 			String viewDescription = rsAparment.getString("viewDescription");
 			double pricePerNight = rsAparment.getDouble("price");
