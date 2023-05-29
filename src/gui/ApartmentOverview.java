@@ -56,6 +56,7 @@ public class ApartmentOverview extends JDialog {
 	private int floorNoGet;
 	private boolean hasBalcony;
 	private static boolean hasBeenClicked = false;
+	private static boolean shutdown = false;
 
 	/**
 	 * Launch the application.
@@ -73,13 +74,13 @@ public class ApartmentOverview extends JDialog {
 			}
 		});
 		new Thread(() -> {
-			while(true) {
+			while(!shutdown) {
 				try {
 					System.out.println(hasBeenClicked);
 					if(hasBeenClicked) {
 						dialog.executeSearch();
 					}
-					Thread.sleep(2000);
+					Thread.sleep(10000);
 				} catch (InterruptedException e) {
 					// should not happen - we don't interrupt this thread
 					e.printStackTrace();
@@ -220,6 +221,7 @@ public class ApartmentOverview extends JDialog {
 				JButton startBookingButton = new JButton("<html>Start New<br />Booking</html>");
 				startBookingButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						startBookingClicked();
 					}
 				});
 				startBookingButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -227,6 +229,11 @@ public class ApartmentOverview extends JDialog {
 			}
 			{
 				JButton logOutButton = new JButton("Log Out");
+				logOutButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						logOutClicked();
+					}
+				});
 				logOutButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 				right.add(logOutButton, "cell 0 14");
 			}
@@ -241,6 +248,29 @@ public class ApartmentOverview extends JDialog {
 				scrollPane.setViewportView(list);
 			}
 		}
+		init();
+	}
+
+	private void logOutClicked() {
+		shutdown = true;
+		Main main = new Main();
+		main.setVisible(true);
+		super.setVisible(false);
+		super.dispose();
+	}
+
+	private void init() {
+		shutdown = false;
+		hasBeenClicked = false;
+	}
+
+	private void startBookingClicked() {
+		Apartment a = list.getSelectedValue();
+		GuestCreate gc = new GuestCreate(dateStart, dateTo, a.getApartmentNo());
+		gc.setVisible(true);
+		shutdown = true;
+		super.setVisible(false);
+		super.dispose();
 	}
 
 	private void executeSearch() throws DataAccessException {

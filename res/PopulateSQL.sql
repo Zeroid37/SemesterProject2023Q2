@@ -36,8 +36,8 @@ insert into Person values ('Kasper', 'Christiansen', 2, '9394267348', 'Kasp@', '
 insert into Guest values (25, 'Denenmark', 'smaji@');
 insert into Employee values (25, 'Sales', 'Kasp@');
 
-insert into ZipCity values ('zip', 'city');
-insert into Address values ('street', 'house', 'zip')
+insert into ZipCity values ('7160', 'Tørring');
+insert into Address values ('Ådalvej', '46', '7160')
 insert into Person values ('Joe', 'Biden', 3, '12345678', 'joeb@', '123', '123', '1', 'e');
 insert into Employee values ('23', 'Receptionist', 'joeb@');
 
