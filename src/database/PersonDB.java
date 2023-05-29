@@ -160,10 +160,4 @@ public class PersonDB implements PersonDAO {
 		return g;
 	}
 
-	@Override
-	public Employee findEmployeeByEmail(String email) {
-		return null;
-		// TODO Employee is currently handled by LoginController
-	}
-
 }
