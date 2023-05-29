@@ -1,10 +1,8 @@
 package database;
 
-import model.Employee;
 import model.Guest;
 
 public interface PersonDAO {
-	public Employee findEmployeeByEmail(String email);
-	public boolean addGuestToDB(Guest guest);
+	public boolean addGuestToDB(Guest guest) throws DataAccessException;
 	public Guest findGuestByGuestNo(int guestNo) throws DataAccessException;
 }

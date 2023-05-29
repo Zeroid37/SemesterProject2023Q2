@@ -1,16 +1,12 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.DBConnection;
-import database.DataAccessException;
 import model.Apartment;
 
 public class ApartmentDB implements ApartmentDAO {
@@ -35,7 +31,7 @@ public class ApartmentDB implements ApartmentDAO {
 			findByApartmentNo = con.prepareStatement(FIND_BY_APARTMENT_NO_Q);
 
 		} catch (SQLException e) {
-			throw new DataAccessException("Something went wrong", e);
+			throw new DataAccessException("Statements could not prepare. (ApartmentDB)", e);
 		}
 	}
 
@@ -73,7 +69,7 @@ public class ApartmentDB implements ApartmentDAO {
 				apartments.add(a);
 			}
 		} catch (Exception e) {
-			System.out.println("Something went wrong in ApartmentDB.searchForApartments()");
+			System.out.println("Something went wrong when searching for apartments by criteria.");
 		}
 		return apartments;
 	}
@@ -95,7 +91,7 @@ public class ApartmentDB implements ApartmentDAO {
 				a = buildObject(rsApartment);
 			}
 		} catch (Exception e) {
-			System.out.println("Something went wrong in ApartmentDB.findApartmentByApartmentNo()");
+			System.out.println("Something went wrong when searching for apartments by apartment number.");
 		}
 
 		return a;
@@ -106,7 +102,7 @@ public class ApartmentDB implements ApartmentDAO {
 	 * @param rsAparment resultset
 	 * @return Apartment object
 	 */
-	private Apartment buildObject(ResultSet rsAparment) {
+	private Apartment buildObject(ResultSet rsAparment) throws DataAccessException {
 		Apartment a = null;
 
 		try {
@@ -121,8 +117,8 @@ public class ApartmentDB implements ApartmentDAO {
 			a = new Apartment(apartmentNo, apartmentType, hasBalcony, floorNo, noOfBeds, viewDescription,
 					pricePerNight);
 
-		} catch (Exception e) {
-
+		} catch (SQLException e) {
+			throw new DataAccessException("Something went wrong when building apartment.", e);
 		}
 		return a;
 	}

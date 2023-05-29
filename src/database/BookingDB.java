@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class BookingDB implements BookingDAO {
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			this.insertApartmentBookingIntoDB = con.prepareStatement(INSERT_APARTMENT_BOOKING_INTO_DB_Q);
 		} catch (SQLException e) {
-			throw new DataAccessException("Statements could not prepare.", e);
+			throw new DataAccessException("Statements could not prepare. (BookingDB)", e);
 		}
 	}
 
@@ -85,7 +84,7 @@ public class BookingDB implements BookingDAO {
 			this.insertApartmentBookingIntoDB.setInt(2, bookingId);
 			this.insertApartmentBookingIntoDB.executeUpdate();
 		} catch (SQLException e) {
-			throw new DataAccessException("Booking could not be saved.", e);
+			throw new DataAccessException("ApartmentBooking could not be saved.", e);
 		}
 	}
 
@@ -127,7 +126,7 @@ public class BookingDB implements BookingDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException("Couldn't find booking.", e);
+			throw new DataAccessException("Could not find booking by booking number.", e);
 		}
 		return b;
 	}
@@ -146,7 +145,7 @@ public class BookingDB implements BookingDAO {
 			ResultSet rs = this.findBookingIdByApartmentNo.executeQuery();
 			bookings = buildObjects(rs);
 		} catch (SQLException e) {
-			throw new DataAccessException("Couldn't find bookings", e);
+			throw new DataAccessException("Could not find bookings by apartment number.", e);
 		}
 
 		return bookings;
@@ -163,7 +162,7 @@ public class BookingDB implements BookingDAO {
 			this.findByBookingId.setInt(1, id);
 			rs = this.findByBookingId.executeQuery();
 		} catch (SQLException e) {
-			throw new DataAccessException("Couldn't find booking", e);
+			throw new DataAccessException("Could not find booking by ID.", e);
 		}
 
 		return rs;
@@ -191,7 +190,7 @@ public class BookingDB implements BookingDAO {
 			LoginController loginController = new LoginController();
 			b.setEmployee(loginController.getCurrEmployee());
 		} catch (SQLException e) {
-			throw new DataAccessException("Couldn't build booking.", e);
+			throw new DataAccessException("Could not build booking.", e);
 		}
 
 		return b;
@@ -216,7 +215,7 @@ public class BookingDB implements BookingDAO {
 				}
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException("Couldn't build booking.", e);
+			throw new DataAccessException("Could not build bookings.", e);
 		}
 		return bookings;
 	}

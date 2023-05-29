@@ -5,12 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.lang.model.element.ExecutableElement;
-
-import database.DBConnection;
-import database.DataAccessException;
 import model.Address;
-import model.Employee;
 import model.Guest;
 
 public class PersonDB implements PersonDAO {
@@ -37,7 +32,7 @@ public class PersonDB implements PersonDAO {
 			this.insertPersonToDB = con.prepareStatement(ADD_PERSON_TO_DB_Q);
 			this.insertGuestToDB = con.prepareStatement(ADD_GUEST_TO_DB_Q);
 		} catch (SQLException e) {
-			throw new DataAccessException("Statements could not be prepared", e);
+			throw new DataAccessException("Statements could not be prepared. (PersonDB)", e);
 		}
 	}
 
@@ -47,7 +42,7 @@ public class PersonDB implements PersonDAO {
 	 * @return boolean true or false whether it succeeded
 	 */
 	@Override
-	public boolean addGuestToDB(Guest guest) {
+	public boolean addGuestToDB(Guest guest) throws DataAccessException {
 		boolean res = false;
 		Address a = guest.getAddress();
 		try {
@@ -69,8 +64,8 @@ public class PersonDB implements PersonDAO {
 			this.insertGuestToDB.executeUpdate();
 
 			res = true;
-		} catch (Exception e) {
-
+		} catch (SQLException e) {
+			throw new DataAccessException("Guest could not be added to DB.", e);
 		}
 
 		return res;
@@ -95,7 +90,7 @@ public class PersonDB implements PersonDAO {
 			id = DBConnection.getInstance().executeInsertWithIdentity(insertAddressToDB);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataAccessException("Address could not be added to DB.", e);
 		}
 
 		return id;
@@ -126,11 +121,11 @@ public class PersonDB implements PersonDAO {
 	}
 
 	/**
-	 * Builds guest object based on resultset
-	 * @param rs Resultset of a found guest
+	 * Builds guest object based on ResultSet
+	 * @param rs ResultSet of a found guest
 	 * @return Guest object
 	 */
-	private Guest buildGuest(ResultSet rs) {
+	private Guest buildGuest(ResultSet rs) throws DataAccessException {
 		Guest g = null;
 		Address a = null;
 
@@ -155,7 +150,7 @@ public class PersonDB implements PersonDAO {
 			g = new Guest(firstName, famName, a, phone, email, userID, password, isAdmin, country, guestNo);
 
 		} catch (Exception e) {
-
+			throw new DataAccessException("Guest could not be built.", e);
 		}
 		return g;
 	}
