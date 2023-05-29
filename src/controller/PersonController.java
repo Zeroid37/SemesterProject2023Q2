@@ -4,11 +4,6 @@ import database.*;
 import model.*;
 
 public class PersonController {
-	public Employee findEmployeeByEmail(String email) throws DataAccessException {
-		PersonDAO personDAO = new PersonDB();
-		Employee employee = personDAO.findEmployeeByEmail(email);
-		return employee;
-	}
 	
 	/**
 	 * Creates a Guest object and utilizes transactions to add the guest to the Database.
