@@ -9,6 +9,8 @@ import database.*;
 import model.*;
 
 public class TryMePlease {
-	public static void main(String[] args) throws DataAccessException {
+	public static void main(String[] args)  {
+
 	}
+
 }

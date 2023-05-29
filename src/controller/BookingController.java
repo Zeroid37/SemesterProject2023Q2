@@ -10,6 +10,11 @@ import model.*;
 public class BookingController {
 	private Booking cBooking;
 
+	
+	
+	public Booking getcBooking() {
+		return cBooking;
+	}
 	/**
 	 * Sweeps database for Apartments with the specified criteria, builds the
 	 * objects and returns back a list of the apartments matching the criteria.
@@ -58,9 +63,10 @@ public class BookingController {
 		List<Booking> bookings = new ArrayList<>();
 		BookingDAO bookingDAO = new BookingDB();
 		bookings = bookingDAO.findBookingsByApartmentNo(apartmentNo);
-		
 		for(int i = 0; i < bookings.size() && res; i++) {
-			res = checkAvailable(dateStart, dateEnd, bookings.get(i));
+			if(checkAvailable(dateStart, dateEnd, bookings.get(i))) {
+				res = false;
+			}
 		}
 		return res;
 	}

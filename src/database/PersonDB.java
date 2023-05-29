@@ -83,6 +83,7 @@ public class PersonDB implements PersonDAO {
 	private int addAddressToDB(Address a) throws DataAccessException {
 		int id = -1;
 		try {
+			this.findZipcodeInDB.setString(1, a.getZip());
 			ResultSet rs = this.findZipcodeInDB.executeQuery();
 			if (!rs.next()) {
 				this.insertZipCityToDB.setString(1, a.getZip());
