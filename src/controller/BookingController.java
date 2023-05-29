@@ -39,7 +39,6 @@ public class BookingController {
 		for (int i = 0; i < apartments.size(); i++) {
 			Apartment a = apartments.get(i);
 			bookings = bookingDAO.findBookingsByApartmentNo(a.getApartmentNo());
-			// System.out.println(a.getApartmentNo() + " - " + bookings.size());
 			if (bookings.size() > 0) {
 				for (int x = 0; x < bookings.size(); x++) {
 					if (checkAvailable(dateStart, dateEnd, bookings.get(x))) {
@@ -70,9 +69,7 @@ public class BookingController {
 
 		int s2 = convertDateToInt(b.getDateStart());
 		int e2 = s2 + b.getNoOfNights();
-		System.out.print(b.getBookingNo());
-		System.out.println(" - " + s1 + " " + e1 + " " + s2 + " " + e2 + "\n");
-
+	
 		if (s1 <= e2 && s2 >= e1 || s1 >= e2 && s2 <= e1) {
 			res = false;
 		}

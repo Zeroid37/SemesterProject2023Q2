@@ -23,6 +23,7 @@ import model.Apartment;
 import model.Booking;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.print.Book;
@@ -35,6 +36,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 public class ApartmentOverview extends JDialog {
+	private static ApartmentOverview dialog;
 	private JTextField dateToTxt;
 	private JTextField maxPriceTxt;
 	private JTextField dateFromTxt;
@@ -53,19 +55,39 @@ public class ApartmentOverview extends JDialog {
 	private int bedsAmountGet;
 	private int floorNoGet;
 	private boolean hasBalcony;
-	
+	private static boolean hasBeenClicked = false;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try {
-			ApartmentOverview dialog = new ApartmentOverview();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					dialog = new ApartmentOverview();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		new Thread(() -> {
+			while(true) {
+				try {
+					System.out.println(hasBeenClicked);
+					if(hasBeenClicked) {
+						dialog.executeSearch();
+					}
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// should not happen - we don't interrupt this thread
+					e.printStackTrace();
+				}catch (DataAccessException e2) {
+					JOptionPane.showMessageDialog(new JFrame(), e2.getMessage());
+				}
+			}
+		}).start();
 	}
 
 	/**
@@ -177,8 +199,8 @@ public class ApartmentOverview extends JDialog {
 					btnSearch.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							try {
-								rememberedCriteria();
-								searchClicked();
+								rememberCriteria();
+								executeSearch();
 							} catch (DataAccessException e1) {
 								JOptionPane.showMessageDialog(new JFrame(), e1.getMessage());
 							}
@@ -221,14 +243,14 @@ public class ApartmentOverview extends JDialog {
 		}
 	}
 
-	private void searchClicked() throws DataAccessException {
+	private void executeSearch() throws DataAccessException {
 		BookingController bookingController = new BookingController();
 		List<Apartment> aList = new ArrayList<>();
 		aList = bookingController.searchForApartments(dateStart, dateTo, minPriceDouble, maxPriceDouble, typeGet, bedsAmountGet, floorNoGet, hasBalcony);
 		displayApartments(aList);
 	}
 	
-	private void rememberedCriteria() {
+	private void rememberCriteria() {
 		String dateStartGet = dateFromTxt.getText();
 		dateStart = LocalDate.parse(dateStartGet);
 		
@@ -249,6 +271,8 @@ public class ApartmentOverview extends JDialog {
 		
 		String balconyGet = String.valueOf(balconyTxt.getSelectedItem());
 		hasBalcony = isBoolean(balconyGet);
+		
+		hasBeenClicked = true;
 	}
 	
 	private void displayApartments(List<Apartment> aList) {
