@@ -13,11 +13,10 @@ public class Reolen {
 	private double height;
 	private double width;
 	private boolean isNew;
-	private boolean hasImmigrantTouchedIt;
 	private String description;
 	
 	public Reolen(String material, int sturdinessScale, int beautyScale, int symmetryScale, int age, int red, int green,
-			int blue, double length, double height, double width, boolean isNew, boolean hasImmigrantTouchedIt, String description) {
+			int blue, double length, double height, double width, boolean isNew, String description) {
 		super();
 		this.material = material;
 		this.sturdinessScale = sturdinessScale;
@@ -31,21 +30,10 @@ public class Reolen {
 		this.height = height;
 		this.width = width;
 		this.isNew = isNew;
-		this.hasImmigrantTouchedIt = hasImmigrantTouchedIt;
 		this.description = description;
 	}
 	
 	
-	public double calculateWorthInVenezueleanBolivar() {
-		double res = 798134923;
-		
-		if(hasImmigrantTouchedIt) {
-			return 0;
-		}
-		
-		return res;
-	}
-
 	public String getMaterial() {
 		return material;
 	}
@@ -140,14 +128,6 @@ public class Reolen {
 
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
-	}
-
-	public boolean isHasImmigrantTouchedIt() {
-		return hasImmigrantTouchedIt;
-	}
-
-	public void setHasImmigrantTouchedIt(boolean hasImmigrantTouchedIt) {
-		this.hasImmigrantTouchedIt = hasImmigrantTouchedIt;
 	}
 
 	public String getDescription() {

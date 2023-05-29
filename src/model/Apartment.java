@@ -75,7 +75,4 @@ public class Apartment {
 	public void setNumberOfBeds(int numberOfBeds) {
 		this.numberOfBeds = numberOfBeds;
 	}
-	
-	
-	
 }
