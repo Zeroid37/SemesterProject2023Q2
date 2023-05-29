@@ -7,7 +7,6 @@ public class Address {
 	private String city;
 	
 	public Address(String street, String houseNo, String zip, String city) {
-		super();
 		this.street = street;
 		this.houseNo = houseNo;
 		this.zip = zip;
