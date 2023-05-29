@@ -71,6 +71,12 @@ public class BookingController {
 		return res;
 	}
 	
+	public Booking findBookingByBookingNo(String bookingNo) throws DataAccessException {
+		BookingDAO bookingDAO = new BookingDB();
+		Booking b = bookingDAO.findBookingByBookingNo(bookingNo);
+		return b;
+	}
+	
 	/**
 	 * Logical calculations based on 2 booking periods, to see if there is overlap
 	 * and thereby deeming the booking not possible.
