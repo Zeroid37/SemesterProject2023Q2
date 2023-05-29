@@ -14,7 +14,7 @@ import database.DataAccessException;
 import model.Apartment;
 
 public class ApartmentDB implements ApartmentDAO {
-	private static final String FIND_BY_CRITERIA = "select Apartment.apartmentNo, Apartment.apartmentType, hasBalcony, floorNo, numberOfBeds, viewDescription, price from ApartmentDescription "
+	private static final String FIND_BY_CRITERIA_Q = "select Apartment.apartmentNo, Apartment.apartmentType, hasBalcony, floorNo, numberOfBeds, viewDescription, price from ApartmentDescription "
 			+ "INNER JOIN Apartment ON Apartment.apartmentDescription_FK = ApartmentDescription.id "
 			+ "INNER JOIN Price ON price.apartmentDescription_FK = ApartmentDescription.id "
 			+ "where apartmentType = ? and numberOfBeds = ? and floorNo = ? and hasBalcony = ? and price between ? and ? ";
@@ -31,7 +31,7 @@ public class ApartmentDB implements ApartmentDAO {
 			DBConnection dbc = DBConnection.getInstance();
 			Connection con = dbc.getConnection();
 
-			findByCriteria = con.prepareStatement(FIND_BY_CRITERIA);
+			findByCriteria = con.prepareStatement(FIND_BY_CRITERIA_Q);
 			findByApartmentNo = con.prepareStatement(FIND_BY_APARTMENT_NO_Q);
 
 		} catch (SQLException e) {

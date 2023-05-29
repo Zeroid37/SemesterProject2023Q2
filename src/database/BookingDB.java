@@ -14,14 +14,14 @@ import controller.LoginController;
 import model.Booking;
 
 public class BookingDB implements BookingDAO {
-	private static final String FIND_BY_BOOKING_NO = "select * from Booking where bookingNo = ?";
-	private static final String FIND_BY_BOOKING_ID = "select * from Booking where id = ?";
-	private static final String FIND_BOOKING_ID_BY_APARTMENT_NO = "select bookingId from ApartmentBooking where apartmentNo = ?";
-	private static final String FIND_APARTMENT_NO_BY_BOOKING_ID = "select apartmentNo from ApartmentBooking where bookingId = ?";
-	private static final String UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO = "update Booking set isDepositPaid = ? where bookingNo = ?";
-	private static final String INSERT_BOOKING_INTO_DB = "insert into Booking (bookingNo, travelAgency, checkInDate, noOfNights,"
+	private static final String FIND_BY_BOOKING_NO_Q = "select * from Booking where bookingNo = ?";
+	private static final String FIND_BY_BOOKING_ID_Q = "select * from Booking where id = ?";
+	private static final String FIND_BOOKING_ID_BY_APARTMENT_NO_Q = "select bookingId from ApartmentBooking where apartmentNo = ?";
+	private static final String FIND_APARTMENT_NO_BY_BOOKING_ID_Q = "select apartmentNo from ApartmentBooking where bookingId = ?";
+	private static final String UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO_Q = "update Booking set isDepositPaid = ? where bookingNo = ?";
+	private static final String INSERT_BOOKING_INTO_DB_Q = "insert into Booking (bookingNo, travelAgency, checkInDate, noOfNights,"
 			+ "discount, isDepositPaid, activityQuantityToday, employeeNo_FK, guestNo_FK, price) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String INSERT_APARTMENT_BOOKING_INTO_DB = "insert into ApartmentBooking (apartmentNo, bookingId) values (?, ?)";
+	private static final String INSERT_APARTMENT_BOOKING_INTO_DB_Q = "insert into ApartmentBooking (apartmentNo, bookingId) values (?, ?)";
 	private PreparedStatement findByBookingNo, findByBookingId, findBookingIdByApartmentNo, findApartmentNoByBookingId,
 			updateIsDepositPaidByBookingNo, insertBookingIntoDB, insertApartmentBookingIntoDB;
 
@@ -29,14 +29,14 @@ public class BookingDB implements BookingDAO {
 		try {
 			DBConnection dbc = DBConnection.getInstance();
 			Connection con = dbc.getConnection();
-			this.findByBookingNo = con.prepareStatement(FIND_BY_BOOKING_NO);
-			this.findByBookingId = con.prepareStatement(FIND_BY_BOOKING_ID);
-			this.findBookingIdByApartmentNo = con.prepareStatement(FIND_BOOKING_ID_BY_APARTMENT_NO);
-			this.findApartmentNoByBookingId = con.prepareStatement(FIND_APARTMENT_NO_BY_BOOKING_ID);
-			this.updateIsDepositPaidByBookingNo = con.prepareStatement(UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO);
-			this.insertBookingIntoDB = con.prepareStatement(INSERT_BOOKING_INTO_DB,
+			this.findByBookingNo = con.prepareStatement(FIND_BY_BOOKING_NO_Q);
+			this.findByBookingId = con.prepareStatement(FIND_BY_BOOKING_ID_Q);
+			this.findBookingIdByApartmentNo = con.prepareStatement(FIND_BOOKING_ID_BY_APARTMENT_NO_Q);
+			this.findApartmentNoByBookingId = con.prepareStatement(FIND_APARTMENT_NO_BY_BOOKING_ID_Q);
+			this.updateIsDepositPaidByBookingNo = con.prepareStatement(UPDATE_IS_DEPOSIT_PAID_BY_BOOKING_NO_Q);
+			this.insertBookingIntoDB = con.prepareStatement(INSERT_BOOKING_INTO_DB_Q,
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			this.insertApartmentBookingIntoDB = con.prepareStatement(INSERT_APARTMENT_BOOKING_INTO_DB);
+			this.insertApartmentBookingIntoDB = con.prepareStatement(INSERT_APARTMENT_BOOKING_INTO_DB_Q);
 		} catch (SQLException e) {
 			throw new DataAccessException("Statements could not prepare.", e);
 		}
