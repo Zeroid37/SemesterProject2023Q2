@@ -39,12 +39,15 @@ public class BookingController {
 		for (int i = 0; i < apartments.size(); i++) {
 			Apartment a = apartments.get(i);
 			bookings = bookingDAO.findBookingsByApartmentNo(a.getApartmentNo());
-			//System.out.println(a.getApartmentNo() + " - " + bookings.size());
+			// System.out.println(a.getApartmentNo() + " - " + bookings.size());
 			if (bookings.size() > 0) {
-				if (checkAvailable(dateStart, dateEnd, bookings)) {
-					apartments.remove(i);
-					i--;
+				for (int x = 0; x < bookings.size(); x++) {
+					if (checkAvailable(dateStart, dateEnd, bookings.get(x))) {
+						apartments.remove(i);
+						i--;
+					}
 				}
+
 			}
 		}
 		return apartments;
@@ -59,24 +62,21 @@ public class BookingController {
 	 * @param a         Apartment object
 	 * @return Boolean true or false.
 	 */
-	private boolean checkAvailable(LocalDate dateStart, LocalDate dateEnd, List<Booking> bookings)
-			throws DataAccessException {
+	private boolean checkAvailable(LocalDate dateStart, LocalDate dateEnd, Booking b) throws DataAccessException {
 		boolean res = true;
 
 		int s1 = convertDateToInt(dateStart);
 		int e1 = convertDateToInt(dateEnd);
 
-		for (int i = 0; i < bookings.size() && res; i++) {
+		int s2 = convertDateToInt(b.getDateStart());
+		int e2 = s2 + b.getNoOfNights();
+		System.out.print(b.getBookingNo());
+		System.out.println(" - " + s1 + " " + e1 + " " + s2 + " " + e2 + "\n");
 
-			int s2 = convertDateToInt(bookings.get(i).getDateStart());
-			int e2 = s2 + bookings.get(i).getNoOfNights();
-			System.out.print(bookings.get(i).getBookingNo());
-			System.out.println(" - " + s1 + " " + e1 + " " + s2 + " " + e2 + "\n");
-			
-			if (s1 <= e2 && s2 >= e1 || s1 >= e2 && s2 <= e1) {
-				res = false;
-			}
+		if (s1 <= e2 && s2 >= e1 || s1 >= e2 && s2 <= e1) {
+			res = false;
 		}
+
 		return res;
 	}
 
