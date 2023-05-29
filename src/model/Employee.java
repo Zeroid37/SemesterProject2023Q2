@@ -1,13 +1,11 @@
 package model;
 
-import java.util.Random;
-
 public class Employee extends Person {
 	private int employeeNo;
 	private String department;
 	
-	public Employee(String firstName, String famName, Address address, String phone, String email, String department, String type) {
-		super(firstName, famName, address, phone, email, type);
+	public Employee(String firstName, String famName, Address address, String phone, String email, String department) {
+		super(firstName, famName, address, phone, email, "e");
 		this.employeeNo = 23;
 		this.department = department;
 	}
