@@ -9,21 +9,22 @@ import model.*;
 
 public class BookingController {
 	private Booking cBooking;
-	
-	
+
 	/**
-	 * Sweeps database for Apartments with the specified criteria, 
-	 * builds the objects and returns back a list of the apartments matching the criteria.
-	 * Thereafter checks each apartment to see if they are available at the given dateStart and dateEnd
-	 * By comparing the time period with every booking the apartment has.
-	 * @param	dateStart	Start date of possible booking
-	 * @param	dateEnd		End date of possible booking
-	 * @param 	minPrice	Minimum price for apartment
-	 * @param	maxPrice	Maximum price for apartment
-	 * @param 	apartmentType	Apartment type, e.g "Single" or "Family"
-	 * @param	noOfBeds	Number of Beds in apartment
-	 * @param 	floorNo		Floor number of apartment
-	 * @param	hasBalcony	If apartment has a balcony
+	 * Sweeps database for Apartments with the specified criteria, builds the
+	 * objects and returns back a list of the apartments matching the criteria.
+	 * Thereafter checks each apartment to see if they are available at the given
+	 * dateStart and dateEnd By comparing the time period with every booking the
+	 * apartment has.
+	 * 
+	 * @param dateStart     Start date of possible booking
+	 * @param dateEnd       End date of possible booking
+	 * @param minPrice      Minimum price for apartment
+	 * @param maxPrice      Maximum price for apartment
+	 * @param apartmentType Apartment type, e.g "Single" or "Family"
+	 * @param noOfBeds      Number of Beds in apartment
+	 * @param floorNo       Floor number of apartment
+	 * @param hasBalcony    If apartment has a balcony
 	 * @return ArrayList of Apartments eligible to be booked in given time period
 	 */
 	public List<Apartment> searchForApartments(LocalDate dateStart, LocalDate dateEnd, double minPrice, double maxPrice,
@@ -32,40 +33,45 @@ public class BookingController {
 		List<Apartment> apartments = apartmentController.searchForApartments(minPrice, maxPrice, apartmentType,
 				noOfBeds, floorNo, hasBalcony);
 
+		List<Booking> bookings = new ArrayList<>();
+		BookingDAO bookingDAO = new BookingDB();
+
 		for (int i = 0; i < apartments.size(); i++) {
 			Apartment a = apartments.get(i);
-
-			if (checkAvailable(dateStart, dateEnd, a)) {
-				apartments.remove(i);
+			bookings = bookingDAO.findBookingsByApartmentNo(a.getApartmentNo());
+			//System.out.println(a.getApartmentNo() + " - " + bookings.size());
+			if (bookings.size() > 0) {
+				if (checkAvailable(dateStart, dateEnd, bookings)) {
+					apartments.remove(i);
+					i--;
+				}
 			}
 		}
 		return apartments;
 	}
 
 	/**
-	 * Logical calculations based on 2 booking periods, to see if there is overlap and thereby deeming
-	 * the booking not possible.
-	 * @param dateStart	Start date of the apartment booking
-	 * @param dateEnd	End date of the apartment booking
-	 * @param a			Apartment object
+	 * Logical calculations based on 2 booking periods, to see if there is overlap
+	 * and thereby deeming the booking not possible.
+	 * 
+	 * @param dateStart Start date of the apartment booking
+	 * @param dateEnd   End date of the apartment booking
+	 * @param a         Apartment object
 	 * @return Boolean true or false.
 	 */
-	private boolean checkAvailable(LocalDate dateStart, LocalDate dateEnd, Apartment a) throws DataAccessException {
+	private boolean checkAvailable(LocalDate dateStart, LocalDate dateEnd, List<Booking> bookings)
+			throws DataAccessException {
 		boolean res = true;
-		List<Booking> bookings = new ArrayList<>();
-
-		BookingDAO bookingDAO = new BookingDB();
-		bookings = bookingDAO.findBookingsByApartmentNo(a.getApartmentNo());
 
 		int s1 = convertDateToInt(dateStart);
 		int e1 = convertDateToInt(dateEnd);
-		
-		
 
 		for (int i = 0; i < bookings.size() && res; i++) {
-			
+
 			int s2 = convertDateToInt(bookings.get(i).getDateStart());
 			int e2 = s2 + bookings.get(i).getNoOfNights();
+			System.out.print(bookings.get(i).getBookingNo());
+			System.out.println(" - " + s1 + " " + e1 + " " + s2 + " " + e2 + "\n");
 			
 			if (s1 <= e2 && s2 >= e1 || s1 >= e2 && s2 <= e1) {
 				res = false;
@@ -73,13 +79,15 @@ public class BookingController {
 		}
 		return res;
 	}
-	
+
 	/**
-	 * Method for beginning the booking process. Finds apartment by its apartment number, 
-	 * calculates number of nights, sets a price and sets the employee to the booking
-	 * @param dateStart	Start date of the booking
-	 * @param dateEnd	End date of the booking
-	 * @param apartmentNo	Apartment number of the apartment that wishes to be booked
+	 * Method for beginning the booking process. Finds apartment by its apartment
+	 * number, calculates number of nights, sets a price and sets the employee to
+	 * the booking
+	 * 
+	 * @param dateStart   Start date of the booking
+	 * @param dateEnd     End date of the booking
+	 * @param apartmentNo Apartment number of the apartment that wishes to be booked
 	 * @return Booking as cBooking
 	 */
 	public Booking startBooking(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) throws DataAccessException {
@@ -95,32 +103,36 @@ public class BookingController {
 		cBooking.setEmployee(e);
 		return cBooking;
 	}
-	
+
 	/**
-	 * Creates a Guest object by calling it's constructor, and sets the Guest to cBooking(Current booking)
-	 * @param	firstName	First name of the guest
-	 * @param	familyName	Family name of the guest(s)
-	 * @param 	street		The street name the guest lives on
-	 * @param	houseNo		The house number the guest lives on
-	 * @param 	zip			The zipcode the guest lives in
-	 * @param	city		The city the guest lives in
-	 * @param 	phone		The phone number of the guest
-	 * @param	email		The email of the guest
-	 * @param 	country		The country the guest lives in
+	 * Creates a Guest object by calling it's constructor, and sets the Guest to
+	 * cBooking(Current booking)
+	 * 
+	 * @param firstName  First name of the guest
+	 * @param familyName Family name of the guest(s)
+	 * @param street     The street name the guest lives on
+	 * @param houseNo    The house number the guest lives on
+	 * @param zip        The zipcode the guest lives in
+	 * @param city       The city the guest lives in
+	 * @param phone      The phone number of the guest
+	 * @param email      The email of the guest
+	 * @param country    The country the guest lives in
 	 * @return Guest object
 	 */
 	public Guest createGuest(String firstName, String familyName, String street, String houseNo, String zip,
 			String city, String phone, String email, String country) throws DataAccessException {
-		
+
 		PersonController personController = new PersonController();
 		Guest g = personController.createGuest(firstName, familyName, street, houseNo, zip, city, phone, email, country,
 				"g");
 		cBooking.setGuest(g);
 		return g;
 	}
-	
+
 	/**
-	 * Confirms the booking and utilizes transactions to add the booking to the database
+	 * Confirms the booking and utilizes transactions to add the booking to the
+	 * database
+	 * 
 	 * @return Boolean whether it succeeded or not
 	 */
 	public boolean bookingConfirm() throws DataAccessException {
@@ -135,12 +147,15 @@ public class BookingController {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * Method to pay the deposit of the booking, after it has been confirmed.
-	 * @param	amount	The amount the Guest have paid, should exceed at minimum 50% of the total price
-	 * @param	bookingNo the booking number of the booking the guest wishes to pay deposit to
-	 * @return	Boolean true or false if the amount is enough to pay the deposit
+	 * 
+	 * @param amount    The amount the Guest have paid, should exceed at minimum 50%
+	 *                  of the total price
+	 * @param bookingNo the booking number of the booking the guest wishes to pay
+	 *                  deposit to
+	 * @return Boolean true or false if the amount is enough to pay the deposit
 	 */
 	public boolean payDeposit(double amount, String bookingNo) throws DataAccessException {
 		BookingDAO bookingDAO = new BookingDB();
@@ -152,11 +167,14 @@ public class BookingController {
 		}
 		return res;
 	}
+
 	/**
-	 * Logical calculation to determine number of nights based on a date start and date end
-	 * @param 	dateStart	Start date
-	 * @param 	dateEnd		End date
-	 * @return	number of nights in int
+	 * Logical calculation to determine number of nights based on a date start and
+	 * date end
+	 * 
+	 * @param dateStart Start date
+	 * @param dateEnd   End date
+	 * @return number of nights in int
 	 */
 	private int calculateNoOfNights(LocalDate dateStart, LocalDate dateEnd) {
 		int startDay = dateStart.getDayOfYear();
@@ -170,9 +188,10 @@ public class BookingController {
 
 		return res;
 	}
-	
+
 	/**
 	 * Logical calculations to convert a date into days since year 0
+	 * 
 	 * @param date date objects
 	 * @return int of the amount of days the date totals to
 	 */

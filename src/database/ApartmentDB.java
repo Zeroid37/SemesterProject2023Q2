@@ -46,10 +46,11 @@ public class ApartmentDB implements ApartmentDAO {
 	 * @param 	floorNo		Floor number of apartment
 	 * @param	hasBalcony	If apartment has a balcony
 	 * @return ArrayList of Apartments eligible to be booked in given time period
+	 * @throws DataAccessException 
 	 */
 	@Override
 	public List<Apartment> searchForApartments(double minPrice, double maxPrice, String apartmentType, int noOfBeds,
-			int floorNo, boolean hasBalcony) {
+			int floorNo, boolean hasBalcony) throws DataAccessException {
 
 		List<Apartment> apartments = new ArrayList<>();
 
@@ -68,8 +69,8 @@ public class ApartmentDB implements ApartmentDAO {
 				a = buildObject(rsApartments);
 				apartments.add(a);
 			}
-		} catch (Exception e) {
-			System.out.println("Something went wrong when searching for apartments by criteria.");
+		} catch (SQLException e) {
+			throw new DataAccessException("Something went wrong when searching for apartments by criteria.", e);
 		}
 		return apartments;
 	}
@@ -78,9 +79,10 @@ public class ApartmentDB implements ApartmentDAO {
 	 * Searches database for an apartment with specified apartment number and builds the object
 	 * @param	apartmentNo	Apartment Number
 	 * @return Apartment
+	 * @throws DataAccessException 
 	 */
 	@Override
-	public Apartment findApartmentByApartmentNo(String apartmentNo) {
+	public Apartment findApartmentByApartmentNo(String apartmentNo) throws DataAccessException {
 		Apartment a = null;
 
 		try {
@@ -90,8 +92,8 @@ public class ApartmentDB implements ApartmentDAO {
 			if (rsApartment.next()) {
 				a = buildObject(rsApartment);
 			}
-		} catch (Exception e) {
-			System.out.println("Something went wrong when searching for apartments by apartment number.");
+		} catch (SQLException e) {
+			throw new DataAccessException("Something went wrong when searching for apartments by apartment number.", e);
 		}
 
 		return a;

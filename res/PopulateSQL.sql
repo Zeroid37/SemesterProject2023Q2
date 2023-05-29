@@ -1,27 +1,26 @@
 use holidayCenter;
 
 --values(hasBalcony, floorNo, noOfBeds, viewDescription)
-insert into ApartmentDescription values (1, 2, 2, 'Trashcans');
-insert into ApartmentDescription values (1, 2, 2, 'Trashcans2');
-insert into ApartmentDescription values (1, 2, 2, 'Trashcans3');
-insert into ApartmentDescription values (0, 1, 3, 'Swimming Pool');
-insert into ApartmentDescription values (0, 1, 5, 'The Ocean');
-insert into ApartmentDescription values (1, 3, 4, 'Aids');
-insert into ApartmentDescription values (1, 1, 3, 'Cancer');
-insert into ApartmentDescription values (0, 2, 2, 'Pest');
-insert into ApartmentDescription values (1, 3, 4, 'HIV');
-insert into ApartmentDescription values (1, 1, 1, 'Kasper');
-
 --values(apartmentNo, apartmentType, apartmentDescription_FK)
+insert into ApartmentDescription values (1, 2, 2, 'Trashcans');
 insert into Apartment values ('1', 'Single', 1);
+insert into ApartmentDescription values (1, 2, 2, 'Trashcans2');
 insert into Apartment values ('2', 'Single', 2);
+insert into ApartmentDescription values (1, 2, 2, 'Trashcans3');
 insert into Apartment values ('3', 'Single', 3);
+insert into ApartmentDescription values (0, 1, 3, 'Swimming Pool');
 insert into Apartment values ('4', 'Family', 4);
+insert into ApartmentDescription values (0, 1, 5, 'The Ocean');
 insert into Apartment values ('5', 'Penthouse', 5);
+insert into ApartmentDescription values (1, 3, 4, 'Aids');
 insert into Apartment values ('6', 'Single', 6);
+insert into ApartmentDescription values (1, 1, 3, 'Cancer');
 insert into Apartment values ('7', 'Family', 7);
+insert into ApartmentDescription values (0, 2, 2, 'Pest');
 insert into Apartment values ('8', 'Single', 8);
+insert into ApartmentDescription values (1, 3, 4, 'HIV');
 insert into Apartment values ('9', 'Penthouse', 9);
+insert into ApartmentDescription values (1, 1, 1, 'Kasper');
 insert into Apartment values ('10', 'Family', 10);
 
 
