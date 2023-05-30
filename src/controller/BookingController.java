@@ -55,12 +55,19 @@ public class BookingController {
 						i--;
 					}
 				}
-
 			}
 		}
 		return apartments;
 	}
 
+	/**
+	 * Runs a check for a single apartment to see if it is available
+	 * 
+	 * @param dateStart LocalDate object for which date the booking would start
+	 * @param dateEnd LocalDate object for which date the booking would end
+	 * @param apartmentNo apartment number for the specified apartment that should be checked
+	 * @return boolean true or false whether it is available or not
+	 */
 	public boolean checkSingleApartment(LocalDate dateStart, LocalDate dateEnd, String apartmentNo) throws DataAccessException {
 		boolean res = true;
 		
@@ -74,7 +81,12 @@ public class BookingController {
 		}
 		return res;
 	}
-	
+	/**
+	 * Finds a single Booking by a booking number
+	 * 
+	 * @param bookingNo booking number for booking
+	 * @return Booking object
+	 */
 	public Booking findBookingByBookingNo(String bookingNo) throws DataAccessException {
 		BookingDAO bookingDAO = new BookingDB();
 		Booking b = bookingDAO.findBookingByBookingNo(bookingNo);
