@@ -126,7 +126,7 @@ class BookingControllerTest {
 		// Thereby the test shows that the object is created and is not null
 		// For further proof that the right object is created
 		// The object's data can be weighted with our search criteria
-		for(int i=0; i<=a.size()-1; i++) {
+		for(int i=0; i<a.size(); i++) {
 			assertNotNull(a.get(i));
 			assertTrue(a.get(i).getPricePerNight() > 499 && a.get(i).getPricePerNight() < 501);
 			assertTrue(a.get(i).getApartmentType().equals("Single"));
