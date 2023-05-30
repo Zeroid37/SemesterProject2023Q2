@@ -1,14 +1,3 @@
--- drop if necessary, then create "company"
-use master;
-if exists (select * from sys.databases where name='holidayCenter')
-	drop database holidayCenter;
-go
-
-create database holidayCenter;
-go
-
-use holidayCenter;
-
 -- create tables
 create table ZipCity( 
 	zip varchar(16) not null,
@@ -72,10 +61,10 @@ create table Profession(
 );
 
 create table InstructorProfession(
-	proessionID int not null,
+	professionID int not null,
 	instructorNo varchar(16) not null,
-	primary key (proessionID, instructorNo),
-	foreign key (proessionID) references Profession(id),
+	primary key (professionID, instructorNo),
+	foreign key (professionID) references Profession(id),
 	foreign key (instructorNo) references Instructor(instructorNo)
 );
 
@@ -107,7 +96,7 @@ create table Booking(
 	id int IDENTITY(1,1) not null,
 	bookingNo int unique not null,
 	travelAgency varchar(20),
-	checkinDate datetime not null,
+	checkInDate datetime not null,
 	noOfNights int not null,
 	discount int,
 	isDepositPaid bit,
