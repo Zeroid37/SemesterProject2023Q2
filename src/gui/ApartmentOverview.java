@@ -159,7 +159,7 @@ public class ApartmentOverview extends JDialog {
 			}
 			{
 				apartmentTypeTxt = new JComboBox();
-				apartmentTypeTxt.setModel(new DefaultComboBoxModel(new String[] { "Single", "Family", "Suite" }));
+				apartmentTypeTxt.setModel(new DefaultComboBoxModel(new String[] {"Single", "Family", "Penthouse"}));
 				left.add(apartmentTypeTxt, "cell 1 5,growx");
 			}
 			{
