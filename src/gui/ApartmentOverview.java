@@ -76,7 +76,6 @@ public class ApartmentOverview extends JDialog {
 		new Thread(() -> {
 			while(!shutdown) {
 				try {
-					System.out.println(hasBeenClicked);
 					if(hasBeenClicked) {
 						dialog.executeSearch();
 					}

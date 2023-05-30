@@ -43,7 +43,6 @@ public class BookingController {
 		BookingDAO bookingDAO = new BookingDB();
 		boolean found = false;
 		for (int i = 0; i < apartments.size(); i++) {
-			System.out.println(i);
 			Apartment a = apartments.get(i);
 			bookings = bookingDAO.findBookingsByApartmentNo(a.getApartmentNo());
 			if (bookings.size() > 0) {
