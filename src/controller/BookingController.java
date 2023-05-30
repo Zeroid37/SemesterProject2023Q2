@@ -38,16 +38,20 @@ public class BookingController {
 		List<Apartment> apartments = apartmentController.searchForApartments(minPrice, maxPrice, apartmentType,
 				noOfBeds, floorNo, hasBalcony);
 
+
 		List<Booking> bookings = new ArrayList<>();
 		BookingDAO bookingDAO = new BookingDB();
-
+		boolean found = false;
 		for (int i = 0; i < apartments.size(); i++) {
+			System.out.println(i);
 			Apartment a = apartments.get(i);
 			bookings = bookingDAO.findBookingsByApartmentNo(a.getApartmentNo());
 			if (bookings.size() > 0) {
-				for (int x = 0; x < bookings.size(); x++) {
+				for (int x = 0; x < bookings.size() && !found; x++) {
+					found = false;
 					if (checkAvailable(dateStart, dateEnd, bookings.get(x))) {
 						apartments.remove(i);
+						found=true;
 						i--;
 					}
 				}

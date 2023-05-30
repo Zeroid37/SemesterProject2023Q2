@@ -158,7 +158,7 @@ class BookingControllerTest {
 		// Thereby the test shows that the object is created and is not null
 		// For further proof that the right object is created
 		// The object's data can be weighted with our search criteria
-		for(int i=0; i<=a.size()-1; i++) {
+		for(int i=0; i<a.size(); i++) {
 			assertNotNull(a.get(i));
 			assertTrue(a.get(i).getPricePerNight() > 499 && a.get(i).getPricePerNight() < 501);
 			assertTrue(a.get(i).getApartmentType().equals("Single"));
@@ -184,6 +184,7 @@ class BookingControllerTest {
 		// These search criteria matches the apartment currently used in the
 		// booking(10387)
 		a = bookingController.searchForApartments(start, end, 499, 501, "Single", 2, 2, true);
+		System.out.println(a.size());
 
 		// The method returns an ArrayList, so it is necessary to iterate through it
 		// For this search, we know that the criteria will result in 0 possible apartments
